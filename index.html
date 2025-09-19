@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyEarn - Earn Money Daily</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js Library for Admin Dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* --- START: Modern Premium Theme --- */
+        :root {
+            --primary: #5E5CE6;      /* Royal Blue */
+            --primary-light: #7C7AEF; /* Lighter shade for gradients */
+            --secondary: #1C1C4D;    /* Midnight Blue */
+            --accent: #E83E8C;       /* Magenta */
+            --success: #28C76F;      /* Emerald Green */
+            --warning: #FF9F43;      /* Amber */
+            --danger: #EA5455;       /* Carmine Pink */
+            --gray: #6E6E73;
+            
+            /* Light Theme (Premium Off-White) */
+            --background-color: #F8F9FA;
+            --text-color: #212529;
+            --card-background: #FFFFFF;
+            --input-border: #E5E5EA;
+            --input-background-disabled: #F2F2F7;
+            --footer-background: rgba(255, 255, 255, 0.8);
+            --shadow-color: rgba(94, 92, 230, 0.1);
+            --shadow-color-hover: rgba(94, 92, 230, 0.15);
+        }
+
+        body.dark-mode {
+            /* Dark Theme (Deep Charcoal) */
+            --background-color: #16181D;
+            --text-color: #E1E3E6;
+            --card-background: #1F222A;
+            --input-border: #333742;
+            --input-background-disabled: #2A2D35;
+            --footer-background: rgba(31, 34, 42, 0.8);
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --shadow-color-hover: rgba(0, 0, 0, 0.3);
+            
+            --gray: #8A8A8E;
+        }
+        /* --- END: Theme Variables --- */
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding-bottom: 80px; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            color: var(--warning);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-balance {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(94, 92, 230, 0.3);
+        }
+        
+        /* Auth Styles */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        
+        .auth-card {
+            background: var(--card-background);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: background-color 0.3s;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 2px solid var(--input-border);
+        }
+        
+        .auth-tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(94, 92, 230, 0.15);
+        }
+        .form-group input:disabled {
+            background: var(--input-background-disabled);
+            cursor: not-allowed;
+        }
+        
+        .forgot-password-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .forgot-password-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .forgot-password-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Screen Container */
+        .screen-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .screen-active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Card Styles */
+        .card {
+            background: var(--card-background);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 25px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            border: 1px solid transparent;
+        }
+        body.dark-mode .card {
+            border: 1px solid var(--input-border);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow-color-hover);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        /* Home Screen */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background: var(--card-background);
+            border-radius: 18px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid transparent;
+        }
+        body.dark-mode .feature-card {
+            border: 1px solid var(--input-border);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color-hover);
+            border-color: var(--primary);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(94, 92, 230, 0.1), rgba(94, 92, 230, 0.2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* --- Professional Spin Wheel Styles --- */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .wheel {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -8px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 30px solid var(--danger);
+            filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
+        }
+
+        .wheel-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0,0,0,0.15), inset 0 0 25px rgba(0,0,0,0.25);
+            transition: transform 4s cubic-bezier(0.2, 0.8, 0.4, 1);
+            border: 8px solid var(--background-color);
+        }
+
+        .wheel-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .wheel-center {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: var(--card-background);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 0 0 5px var(--card-background), 0 0 15px rgba(0, 0, 0, 0.3);
+            border: 5px solid var(--background-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .wheel-center:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        .wheel-center.disabled {
+            background: var(--gray);
+            color: white;
+            cursor: not-allowed;
+            font-size: 1.1rem; 
+        }
+        .wheel-center.disabled:hover {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .spins-left {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        /* --- END of Spin Wheel Styles --- */
+        
+        /* --- START: Updated Button Styles --- */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(94, 92, 230, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(94, 92, 230, 0.4);
+        }
+        
+        .btn-outline-primary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+        }
+        /* --- END: Updated Button Styles --- */
+        
+        /* Offers Section */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .offer-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: all 0.3s ease;
+            border: 1px solid var(--input-border);
+        }
+        
+        .offer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px var(--shadow-color-hover);
+        }
+        
+        .offer-card h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .offer-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            flex-grow: 1;
+        }
+        
+        .offer-price {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+        
+        /* Footer Navigation (Frosted Glass) */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--footer-background);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -5px 20px var(--shadow-color);
+            z-index: 101; 
+            transition: background-color 0.3s;
+            border-top: 1px solid var(--input-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            padding: 5px 15px;
+            border-radius: 15px;
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(94, 92, 230, 0.1);
+        }
+        
+        .nav-item.active i {
+            transform: scale(1.2);
+        }
+        
+        /* Withdrawal Screen */
+        .withdrawal-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .withdrawal-option {
+            background: var(--card-background);
+            border: 2px solid var(--input-border);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .withdrawal-option.active {
+            border-color: var(--primary);
+            background: rgba(94, 92, 230, 0.05);
+        }
+        
+        .withdrawal-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .conversion-rate {
+            background: var(--background-color);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .payment-fields {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .payment-fields.active {
+            display: block;
+        }
+
+        /* --- START: Redemption Progress Bar Styles --- */
+        .redemption-progress-container {
+            margin-bottom: 25px;
+        }
+        .redemption-progress-container h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .progress-bar-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: var(--input-border);
+            z-index: 1;
+        }
+        .progress-line-active {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 0%; /* Controlled by JS */
+            background-color: var(--success);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+            font-size: 0.8rem;
+            color: var(--gray);
+            width: 80px;
+            text-align: center;
+        }
+        .progress-step-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--card-background);
+            border: 3px solid var(--input-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            transition: all 0.4s ease;
+        }
+        .progress-step.active .progress-step-icon {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .progress-step.completed .progress-step-icon {
+            border-color: var(--success);
+            background-color: var(--success);
+            color: white;
+        }
+        .progress-status-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+        /* --- END: Redemption Progress Bar Styles --- */
+        
+        /* History Items (Shared for Redemption & Spin & Referrals) */
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid var(--input-border);
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+        .history-item-icon.reward { color: var(--success); }
+        .history-item-icon.no-reward { color: var(--danger); }
+        .history-item-icon.withdrawal { color: var(--primary); }
+        .history-item-icon.referral { color: var(--accent); }
+        .history-item-icon.admin-action { color: var(--secondary); }
+        .history-item-icon.transaction { color: var(--gray); } /* Added for general transactions */
+        
+        .history-item-details {
+            flex-grow: 1;
+        }
+        .history-item-details h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        .history-item-details p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        .history-item-meta {
+            text-align: right;
+        }
+        .history-item-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .history-item-status {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+            color: white;
+        }
+        .history-item-status.processing {
+            background: var(--warning);
+            color: #121212;
+        }
+        .history-item-status.completed {
+            background: var(--success);
+        }
+        .history-item-status.rejected {
+            background: var(--danger);
+        }
+        
+        /* Referral Screen */
+        .referral-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .referral-code {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+        
+        .social-share-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-share-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .social-share-btn.whatsapp { background-color: #25D366; }
+        .social-share-btn.facebook { background-color: #1877F2; }
+        .social-share-btn.telegram { background-color: #26A5E4; }
+        .social-share-btn.twitter { background-color: #1DA1F2; }
+        
+        /* Leaderboard Screen */
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--input-border);
+        }
+        
+        .leaderboard-rank {
+            width: 30px;
+            height: 30px;
+            background: var(--background-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .leaderboard-item:first-child .leaderboard-rank {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .leaderboard-item:nth-child(2) .leaderboard-rank {
+            background: #aaa;
+            color: white;
+        }
+        body.dark-mode .leaderboard-item:nth-child(2) .leaderboard-rank {
+            background: #777;
+        }
+        
+        .leaderboard-item:nth-child(3) .leaderboard-rank {
+            background: #cd7f32;
+            color: white;
+        }
+        
+        .leaderboard-user {
+            flex-grow: 1;
+        }
+        
+        .leaderboard-amount {
+            font-weight: 600;
+            color: var(--success);
+        }
+        
+        /* Profile Screen */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .profile-info h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        /* --- START: Achievement Styles --- */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .achievement-card {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--input-border);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .achievement-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement-card p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(80%);
+        }
+
+        .achievement-card.locked .icon {
+            color: var(--gray);
+        }
+        /* --- END: Achievement Styles --- */
+        
+        /* Notification Popup */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success { background: var(--success); }
+        .notification.error { background: var(--danger); }
+        .notification.warning { background: var(--warning); color: #121212; }
+        .notification.info { background: var(--primary); }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* --- Admin Panel Styles --- */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .admin-user-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--input-border);
+        }
+        .admin-user-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        .admin-user-info h4 {
+            margin-bottom: 4px;
+        }
+        .admin-user-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap; /* NEW */
+            justify-content: flex-end; /* NEW */
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: var(--card-background);
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 0.3s;
+        }
+        .modal-content.modal-lg {
+            max-width: 800px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* --- START: Theme Switcher Styles --- */
+        .theme-switcher {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+        }
+        .theme-switcher i {
+            font-size: 1.1rem;
+        }
+        .theme-switcher .fa-sun {
+            color: var(--warning);
+        }
+        body.dark-mode .theme-switcher .fa-moon {
+            color: var(--primary);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        /* --- END: Theme Switcher Styles --- */
+
+        .form-group-inline {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .form-group-inline > * {
+            flex-grow: 1;
+        }
+        .form-group-inline button {
+            flex-grow: 0;
+            padding: 8px;
+        }
+
+        #maintenance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-color);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        #maintenance-overlay i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
+            .offers-grid { grid-template-columns: 1fr; }
+            .welcome-banner { flex-direction: column; text-align: center; gap: 15px; }
+            .withdrawal-options { grid-template-columns: repeat(2, 1fr); }
+            .notification { left: 20px; right: 20px; max-width: none; }
+            .admin-user-item { grid-template-columns: 1fr; }
+            .admin-user-actions { margin-top: 10px; justify-content: flex-end; }
+        }
+        
+        @media (max-width: 480px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .wheel { width: 280px; height: 280px; }
+            .profile-stats { grid-template-columns: repeat(2, 1fr); }
+            .wheel-label { font-size: 0.9rem; }
+            .wheel-center { width: 70px; height: 70px; font-size: 1.2rem; }
+            .admin-stats { grid-template-columns: 1fr; }
+            .logo span { display: none; } /* Hide logo text on small screens */
+        }
+        
+        /* Loading Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse { animation: pulse 2s infinite; }
+    </style>
+</head>
+<body>
+    <!-- Maintenance Mode Overlay -->
+    <div id="maintenance-overlay">
+        <i class="fas fa-tools"></i>
+        <h2>Under Maintenance</h2>
+        <p>We are currently performing maintenance. Please check back later.</p>
+    </div>
+
+    <!-- Notification Popup -->
+    <div class="notification" id="notification">
+        <div class="notification-content" id="notification-content"></div>
+        <button class="notification-close" id="notification-close"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="container">
+        <!-- Authentication Screen -->
+        <div id="auth-screen" class="screen-container screen-active">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);"><i class="fas fa-coins"></i> DailyEarn</h2>
+                    <div class="auth-tabs">
+                        <div class="auth-tab active" data-tab="login">Login</div>
+                        <div class="auth-tab" data-tab="register">Register</div>
+                    </div>
+                    <form id="login-form" class="auth-form active">
+                        <div class="form-group"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="Enter your email" required></div>
+                        <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Enter your password" required></div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Login</button>
+                        <div class="forgot-password-link">
+                            <a href="#" id="forgot-password-link">Forgot Password?</a>
+                        </div>
+                    </form>
+                    <form id="register-form" class="auth-form">
+                        <input type="hidden" id="referral-code-input">
+                        <div class="form-group"><label for="register-name">Full Name</label><input type="text" id="register-name" placeholder="Enter your name" required></div>
+                        <div class="form-group"><label for="register-email">Email</label><input type="email" id="register-email" placeholder="Enter your email" required></div>
+                        <div class="form-group"><label for="register-password">Password</label><input type="password" id="register-password" placeholder="Create a password" required></div>
+                        <div class="form-group"><label for="register-phone">Phone Number</label><input type="tel" id="register-phone" placeholder="Enter your phone number"></div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-user-plus"></i> Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main App (initially hidden) -->
+        <div id="app-screen" class="screen-container">
+            <header>
+                <div class="logo"><i class="fas fa-coins"></i><span>DailyEarn</span></div>
+                <div class="user-actions">
+                    <div class="theme-switcher">
+                        <i class="fas fa-sun"></i>
+                        <label class="switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="user-balance"><i class="fas fa-coins"></i><span id="user-points">0</span></div>
+                </div>
+            </header>
+            
+            <!-- Home Screen -->
+            <div id="home-screen" class="screen-container screen-active">
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h2 id="welcome-user">Hello, User!</h2>
+                        <p>Complete tasks and earn points daily</p>
+                    </div>
+                    <div class="welcome-image"><i class="fas fa-smile-beam" style="font-size: 2.5rem;"></i></div>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card" data-target="spin-screen"><div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div><h3>Spin Wheel</h3></div>
+                    <div class="feature-card" data-target="offers-screen"><div class="feature-icon"><i class="fas fa-gift"></i></div><h3>Offers</h3></div>
+                    <div class="feature-card" data-target="referral-screen"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>Refer & Earn</h3></div>
+                    <div class="feature-card" data-target="withdraw-screen"><div class="feature-icon"><i class="fas fa-wallet"></i></div><h3>Redeem</h3></div>
+                    <div class="feature-card" data-target="leaderboard-screen"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3>Leaderboard</h3></div>
+                    <div class="feature-card" data-target="achievements-screen"><div class="feature-icon"><i class="fas fa-award"></i></div><h3>Achievements</h3></div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Tasks (Earn Points & Spins!)</h2>
+                    <div id="quick-tasks-grid" class="offers-grid">
+                        <div class="offer-card">
+                            <h3>Watch Video</h3>
+                            <p>Watch a 30-second video to earn points & spins.</p>
+                            <div class="offer-price" id="video-reward-text">500 Points</div>
+                            <button class="btn btn-primary" id="watch-video-btn">Start</button>
+                        </div>
+                        <div class="offer-card">
+                            <h3>Complete Survey</h3>
+                            <p>Complete a survey to earn points & spins.</p>
+                            <div class="offer-price" id="survey-reward-text">2500 Points</div>
+                            <button class="btn btn-primary" id="complete-survey-btn">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Spin Wheel Screen -->
+            <div id="spin-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-tachometer-alt"></i> Lucky Spin Wheel</h2>
+                    <div class="wheel-container">
+                        <div class="wheel">
+                            <div class="wheel-pointer"></div>
+                            <div class="wheel-circle" id="wheelCircle"></div>
+                            <div class="wheel-center" id="spinBtn">SPIN</div>
+                        </div>
+                        <div class="spins-left">Spins left: <span id="spins-count">0</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-history"></i> Spin History</h2>
+                    <div id="spin-history">
+                        <p style="text-align: center; color: var(--gray); padding: 20px;">Your spin history will appear here</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offers Screen -->
+            <div id="offers-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-gift"></i> Special Offers</h2>
+                    <div id="offers-grid-container" class="offers-grid">
+                        <p style="text-align: center; color: var(--gray); padding: 20px;">No offers available right now.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Redeem/Withdrawal Screen -->
+            <div id="withdraw-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-wallet"></i> Redeem Points</h2>
+                    <div class="conversion-rate"><span id="conversion-rate-text">10,000 Points = ₹1</span></div>
+                    <div style="margin: 20px 0;">
+                        <label for="redeem-points-amount">Points to Redeem</label>
+                        <input type="number" id="redeem-points-amount" placeholder="Min 5000 points" style="width: 100%; padding: 12px; border-radius: 10px; margin-top: 5px;">
+                        <p style="text-align: right; margin-top: 5px; color: var(--primary);">You will get: ₹<span id="converted-amount">0.00</span></p>
+                    </div>
+                    <p style="font-weight: 500; margin-bottom: 10px;">Select Withdrawal Method:</p>
+                    <div class="withdrawal-options">
+                        <div class="withdrawal-option active" data-method="Bank"><i class="fas fa-university"></i><h3>Bank</h3></div>
+                        <div class="withdrawal-option" data-method="UPI"><i class="fas fa-mobile-alt"></i><h3>UPI</h3></div>
+                        <div class="withdrawal-option" data-method="Amazon Pay"><i class="fab fa-amazon"></i><h3>Amazon Pay</h3></div>
+                        <div class="withdrawal-option" data-method="Paytm"><i class="fas fa-wallet"></i><h3>Paytm</h3></div>
+                    </div>
+                    <div id="withdrawal-fields-container">
+                        <div id="Bank-fields" class="payment-fields active">
+                            <div class="form-group"><label for="bank-acc-number">Account Number</label><input type="text" id="bank-acc-number" placeholder="Enter Account Number"></div>
+                            <div class="form-group"><label for="bank-ifsc">IFSC Code</label><input type="text" id="bank-ifsc" placeholder="Enter IFSC Code"></div>
+                            <div class="form-group"><label for="bank-acc-holder">Account Holder Name</label><input type="text" id="bank-acc-holder" placeholder="Enter Account Holder Name"></div>
+                        </div>
+                        <div id="UPI-fields" class="payment-fields"><div class="form-group"><label for="upi-id">UPI ID</label><input type="text" id="upi-id" placeholder="Enter your UPI ID"></div></div>
+                        <div id="Amazon-Pay-fields" class="payment-fields"><div class="form-group"><label for="amazon-phone">Amazon Pay Number</label><input type="tel" id="amazon-phone" placeholder="Enter registered mobile number"></div></div>
+                        <div id="Paytm-fields" class="payment-fields"><div class="form-group"><label for="paytm-phone">Paytm Number</label><input type="tel" id="paytm-phone" placeholder="Enter registered mobile number"></div></div>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="redeem-btn"><i class="fas fa-check-circle"></i> Confirm Redemption</button>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-history"></i> Redemption History</h2>
+                    
+                    <!-- START: Redemption Progress Bar HTML -->
+                    <div class="redemption-progress-container" id="redemption-progress-bar" style="display: none;"> <!-- Initially hidden -->
+                        <h4>Your Current Redemption Status</h4>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-line"></div>
+                            <div class="progress-line-active" style="width: 50%;"></div> <!-- Example: 50% progress -->
+                            <div class="progress-step completed">
+                                <div class="progress-step-icon"><i class="fas fa-paper-plane"></i></div>
+                                <span>Requested</span>
+                            </div>
+                            <div class="progress-step active">
+                                <div class="progress-step-icon"><i class="fas fa-cogs"></i></div>
+                                <span>Processing</span>
+                            </div>
+                            <div class="progress-step">
+                                <div class="progress-step-icon"><i class="fas fa-check"></i></div>
+                                <span>Completed</span>
+                            </div>
+                        </div>
+                        <p class="progress-status-text">Estimated completion: within 3-5 business days.</p>
+                    </div>
+                    <!-- END: Redemption Progress Bar HTML -->
+
+                    <div id="withdrawal-history">
+                        <p style="text-align: center; color: var(--gray); padding: 20px;">Your redemption history will appear here</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Referral Screen -->
+            <div id="referral-screen" class="screen-container">
+                <div class="referral-card">
+                    <h2 id="referral-title">Refer Friends, Earn Points</h2>
+                    <p id="referral-desc">Get 2500 Points for every friend who signs up</p>
+                    <div class="referral-code" id="user-referral-code">EARN25</div>
+                    <p style="margin-top: 20px;">Share your link via:</p>
+                    <div class="social-share-container">
+                        <a href="#" id="whatsapp-share" target="_blank" class="social-share-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" id="facebook-share" target="_blank" class="social-share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" id="telegram-share" target="_blank" class="social-share-btn telegram"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" id="twitter-share" target="_blank" class="social-share-btn twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <button class="btn btn-warning" id="copy-link-btn" style="margin-top: 20px;"><i class="fas fa-copy"></i> Copy Link</button>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-users"></i> Your Referrals</h2>
+                    <div id="referrals-list"><p style="text-align: center; color: var(--gray); padding: 20px;">People you've referred will appear here</p></div>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-coins"></i> Referral Points</h2>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 2rem; font-weight: 600; color: var(--success);"><span id="referral-points">0</span></div>
+                        <p style="color: var(--gray);">Total points from referrals</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Leaderboard Screen -->
+            <div id="leaderboard-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-trophy"></i> Weekly Leaderboard</h2>
+                    <ul class="leaderboard-list" id="leaderboard-list">
+                        <!-- Leaderboard loaded by JS -->
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-award"></i> Your Rank</h2>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 2rem; font-weight: 600; color: var(--primary);">#<span id="user-rank">...</span></div>
+                        <p style="color: var(--gray);">You've earned <span id="user-points-earned">...</span> points this week</p>
+                        <button class="btn btn-primary feature-card-nav" data-target="home-screen" style="margin-top: 15px;"><i class="fas fa-bolt"></i> Earn More</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Screen -->
+            <div id="profile-screen" class="screen-container">
+                <div class="card">
+                    <div class="profile-header">
+                        <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                        <div class="profile-info"><h2 id="profile-name">User Name</h2><p id="profile-email">user@example.com</p></div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-card"><div class="stat-value"><span id="profile-points">0</span></div><div class="stat-label">Current Points</div></div>
+                        <div class="stat-card"><div class="stat-value"><span id="profile-total-points">0</span></div><div class="stat-label">Total Points Earned</div></div>
+                        <div class="stat-card"><div class="stat-value"><span id="profile-referrals">0</span></div><div class="stat-label">Referrals</div></div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h3 style="margin-bottom: 15px;">Account Settings</h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button id="edit-profile-btn" class="btn" style="justify-content: flex-start; background: var(--background-color);"><i class="fas fa-user-edit" style="color: var(--primary);"></i> Edit Profile</button>
+                            <button data-target="achievements-screen" class="btn feature-card-nav" style="justify-content: flex-start; background: var(--background-color);"><i class="fas fa-award" style="color: var(--primary);"></i> Achievements</button>
+                            <button class="btn" id="logout-btn" style="justify-content: flex-start; background: var(--background-color);"><i class="fas fa-sign-out-alt" style="color: var(--danger);"></i> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Screen -->
+            <div id="edit-profile-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title">
+                        <button class="back-button" data-target="profile-screen"><i class="fas fa-arrow-left"></i></button>
+                        Edit Profile
+                    </h2>
+                    <form id="edit-profile-form">
+                        <div class="form-group">
+                            <label for="edit-profile-name">Full Name</label>
+                            <input type="text" id="edit-profile-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-profile-email">Email</label>
+                            <input type="email" id="edit-profile-email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-profile-phone">Phone Number</label>
+                            <input type="tel" id="edit-profile-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-profile-password">New Password (optional)</label>
+                            <input type="password" id="edit-profile-password" placeholder="Leave blank to keep current password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Achievements Screen -->
+            <div id="achievements-screen" class="screen-container">
+                <div class="card">
+                     <h2 class="card-title">
+                        <button class="back-button" data-target="home-screen"><i class="fas fa-arrow-left"></i></button>
+                        Your Achievements
+                    </h2>
+                    <div class="achievements-grid" id="achievements-grid-container">
+                        <!-- Achievements will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Panel Screen -->
+            <div id="admin-screen" class="screen-container">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+                    <div class="admin-stats">
+                        <div class="stat-card"><div class="stat-value" id="total-users">0</div><div class="stat-label">Total Users</div></div>
+                        <div class="stat-card"><div class="stat-value" id="new-users-24h">0</div><div class="stat-label">New Users (24h)</div></div>
+                        <div class="stat-card"><div class="stat-value" id="total-points-circulating">0</div><div class="stat-label">Points in Circulation</div></div>
+                        <div class="stat-card"><div class="stat-value" id="pending-withdrawals">0</div><div class="stat-label">Pending Withdrawals</div></div>
+                        <div class="stat-card"><div class="stat-value" id="total-withdrawn-amount">₹0</div><div class="stat-label">Total Withdrawn</div></div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                         <canvas id="new-users-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-cog"></i> Quick Actions</h2>
+                    <div class="admin-controls">
+                        <button class="btn btn-primary" id="add-points-btn"><i class="fas fa-plus-circle"></i> Add Points to User</button>
+                        <button class="btn btn-warning" id="send-notification-btn"><i class="fas fa-bell"></i> Send Notification</button>
+                        <button class="btn btn-success" id="manage-offers-btn"><i class="fas fa-gift"></i> Manage Offers</button>
+                        <button class="btn btn-secondary" id="system-settings-btn"><i class="fas fa-cogs"></i> System Settings</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-user-times"></i> Flagged Users (Fraud Detection)</h2>
+                    <div id="flagged-users-list">
+                        <p style="text-align: center; color: var(--gray); padding: 20px;">No flagged users found.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-trophy"></i> Top 5 Users (By Points)</h2>
+                    <div id="admin-top-users-list"></div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-users"></i> All Users</h2>
+                    <div class="admin-controls" style="margin-bottom: 15px;">
+                        <input type="text" id="user-search" placeholder="Search users by name or email..." style="padding: 8px; width: 100%; border-radius: 8px;">
+                    </div>
+                    <div id="admin-users-list"></div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-money-bill-wave"></i> Pending Withdrawal Requests</h2>
+                    <div id="withdrawal-requests-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-history"></i> Processed Withdrawals (Last 10)</h2>
+                    <div id="processed-withdrawals-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-clipboard-list"></i> Admin Activity Log (Last 10 Actions)</h2>
+                    <div id="admin-audit-log-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-bell"></i> Global Notification History</h2>
+                    <div id="admin-notification-history"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <footer id="app-footer" style="display: none;">
+        <a href="#" class="nav-item active" data-target="home-screen"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#" class="nav-item" data-target="offers-screen"><i class="fas fa-gift"></i><span>Offers</span></a>
+        <a href="#" class="nav-item" data-target="spin-screen"><i class="fas fa-tachometer-alt"></i><span>Spin</span></a>
+        <a href="#" class="nav-item" data-target="withdraw-screen"><i class="fas fa-wallet"></i><span>Redeem</span></a>
+        <a href="#" class="nav-item" data-target="profile-screen"><i class="fas fa-user"></i><span>Profile</span></a>
+    </footer>
+
+    <!-- Modals -->
+    <div id="edit-user-modal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="edit-user-modal">&times;</span><h2 id="modal-user-name">Edit User</h2><form id="edit-user-form"><input type="hidden" id="edit-user-uid"><div class="form-group"><label for="edit-user-points">Points</label><input type="number" id="edit-user-points" required></div><div class="form-group"><label for="edit-user-spins">Spins</label><input type="number" id="edit-user-spins" required></div><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button></form></div></div>
+    <div id="add-points-modal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="add-points-modal">&times;</span><h2>Add Points</h2><form id="add-points-form"><div class="form-group"><label for="points-user-select">Select User</label><select id="points-user-select" required><option value="">Select a user</option></select></div><div class="form-group"><label for="points-amount">Points</label><input type="number" id="points-amount" required min="1" placeholder="Enter points"></div><div class="form-group"><label for="points-reason">Reason</label><input type="text" id="points-reason" placeholder="e.g., Contest Winner"></div><button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Add</button></form></div></div>
+    <div id="send-notification-modal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="send-notification-modal">&times;</span><h2>Send Notification</h2><form id="send-notification-form"><div class="form-group"><label for="notification-target">Target</label><select id="notification-target"><option value="all">All Users</option><option value="specific">Specific User</option></select></div><div class="form-group" id="notification-user-select-group" style="display:none;"><label for="notification-user-select">Select User</label><select id="notification-user-select"></select></div><div class="form-group"><label for="notification-title">Title</label><input type="text" id="notification-title" required></div><div class="form-group"><label for="notification-message">Message</label><textarea id="notification-message" required></textarea></div><div class="form-group"><label for="notification-type">Type</label><select id="notification-type"><option value="info">Info</option><option value="success">Success</option><option value="warning">Warning</option><option value="error">Error</option></select></div><button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send</button></form></div></div>
+    <div id="system-settings-modal" class="modal"><div class="modal-content modal-lg"><span class="close-btn" data-modal="system-settings-modal">&times;</span><h2>System Settings</h2><form id="system-settings-form">
+        <div class="form-group"><label for="maintenance-mode-toggle">Maintenance Mode</label><div style="display: flex; align-items: center; gap: 10px;"><label class="switch"><input type="checkbox" id="maintenance-mode-toggle"><span class="slider round"></span></label><span>Enable maintenance mode for all non-admin users.</span></div></div>
+        
+        <hr style="margin: 20px 0;">
+        <h3>Economy Settings</h3>
+        <div class="form-group">
+            <label for="points-per-rupee">Points per Rupee (e.g., 10000 points = ₹1)</label>
+            <input type="number" id="points-per-rupee" required min="1">
+        </div>
+        <div class="form-group"><label>Signup Bonus (Points)</label><input type="number" id="signup-bonus" required min="0"></div>
+        <div class="form-group"><label>Referral Bonus (Points)</label><input type="number" id="referral-bonus" required min="0"></div>
+        <div class="form-group"><label>Minimum Withdrawal (Points)</label><input type="number" id="min-withdrawal" required min="0"></div>
+        
+        <hr style="margin: 20px 0;">
+        <h3>Daily Rewards & Tasks</h3>
+        <div class="form-group"><label>Daily Login Bonus (Points)</label><input type="number" id="daily-login-points" required min="0"></div>
+        <div class="form-group"><label>Daily Login Bonus (Spins)</label><input type="number" id="daily-login-spins" required min="0"></div>
+        
+        <div class="form-group"><label>Video Watch Reward (Points)</label><input type="number" id="video-reward-points" required min="0"></div>
+        <div class="form-group"><label>Video Watch Reward (Spins)</label><input type="number" id="video-reward-spins" required min="0"></div>
+        
+        <div class="form-group"><label>Survey Complete Reward (Points)</label><input type="number" id="survey-reward-points" required min="0"></div>
+        <div class="form-group"><label>Survey Complete Reward (Spins)</label><input type="number" id="survey-reward-spins" required min="0"></div>
+
+        <div class="form-group"><label>Signup Spins</label><input type="number" id="signup-spins" required min="0"></div>
+        <div class="form-group"><label>Daily Free Spins</label><input type="number" id="daily-free-spins" required min="0"></div>
+        
+        <hr style="margin: 20px 0;">
+        <h3>Leaderboard Settings</h3>
+        <div class="form-group">
+            <label for="leaderboard-reset-frequency">Reset Frequency</label>
+            <select id="leaderboard-reset-frequency">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="never">Never</option>
+            </select>
+        </div>
+        <h4>Leaderboard Prizes</h4>
+        <div id="leaderboard-prizes-editor"></div>
+        <button type="button" id="add-leaderboard-prize-btn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Prize</button>
+        
+        <hr style="margin: 20px 0;">
+        <h4>Spin Wheel Rewards</h4>
+        <div id="spin-rewards-editor"></div>
+        <button type="button" id="add-spin-reward-btn" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Reward</button>
+        
+        <hr style="margin: 20px 0;">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Settings</button>
+    </form></div></div>
+    <div id="user-details-modal" class="modal"><div class="modal-content modal-lg"><span class="close-btn" data-modal="user-details-modal">&times;</span><h2 id="details-modal-user-name">User Details</h2><div id="details-modal-content" style="margin-top: 20px;"></div></div></div>
+    <div id="forgot-password-modal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="forgot-password-modal">&times;</span><h2>Reset Password</h2><p style="margin-bottom: 15px; color: var(--gray); font-size: 0.9rem;">Enter your email for a password reset link.</p><form id="forgot-password-form"><div class="form-group"><label for="reset-email">Email</label><input type="email" id="reset-email" required></div><button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-paper-plane"></i> Send Link</button></form></div></div>
+    <div id="manage-offers-modal" class="modal"><div class="modal-content modal-lg"><span class="close-btn" data-modal="manage-offers-modal">&times;</span><h2>Manage Offers</h2><div id="offers-list-admin"></div><hr style="margin: 20px 0;"><h3>Add/Edit Offer</h3><form id="offer-form"><input type="hidden" id="offer-id"><div class="form-group"><label for="offer-title">Title</label><input type="text" id="offer-title" required></div><div class="form-group"><label for="offer-description">Description</label><input type="text" id="offer-description" required></div><div class="form-group"><label for="offer-points">Points</label><input type="number" id="offer-points" required></div><div class="form-group"><label for="offer-link">Link/Action</label><input type="text" id="offer-link" placeholder="e.g., https://example.com"></div><div class="form-group"><label for="offer-status">Status</label><select id="offer-status"><option value="active">Active</option><option value="inactive">Inactive</option></select></div><button type="submit" class="btn btn-primary">Save Offer</button><button type="button" id="clear-offer-form-btn" class="btn">Clear Form</button></form></div></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // --- START: FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyD8yZJzfzzSA898PlXypMLif-yjCFpXYPA",
+            authDomain: "spin-win-rewards-da0c4.firebaseapp.com",
+            databaseURL: "https://spin-win-rewards-da0c4-default-rtdb.firebaseio.com",
+            projectId: "spin-win-rewards-da0c4",
+            storageBucket: "spin-win-rewards-da0c4.firebasestorage.app",
+            messagingSenderId: "1063361515237",
+            appId: "1:1063361515237:web:9f34def8baf56baa5b4e0c",
+            measurementId: "G-379SLS2GQW"
+        };
+        // --- END: FIREBASE CONFIGURATION ---
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // --- Global Constants & Variables ---
+        let spinRewards = [
+            { value: 500,  label: '500',  color: '#ffbe0b' }, { value: 1000, label: '1000', color: '#fb5607' },
+            { value: 200,  label: '200',  color: '#ff006e' }, { value: 2000, label: '2000', color: '#8338ec' },
+            { value: 100,  label: '100',  color: '#3a86ff' }, { value: 0,    label: 'Try Again', color: '#6c757d' },
+            { value: 1500, label: '1500', color: '#8ac926' }, { value: 5000, label: '5000', color: '#f72585' }
+        ];
+
+        const achievementsList = [
+            { id: 'FIRST_SPIN', name: 'First Steps', description: 'Complete your first spin.', icon: 'fa-play-circle', condition: (user) => (user.spinHistory?.length || 0) >= 1 },
+            { id: 'SPIN_MASTER', name: 'Spin Master', description: 'Complete 25 spins.', icon: 'fa-sync-alt', condition: (user) => (user.spinHistory?.length || 0) >= 25 },
+            { id: 'FIRST_PAYOUT', name: 'Big Spender', description: 'Make your first redemption request.', icon: 'fa-hand-holding-usd', condition: (user) => (user.redemptionHistory?.length || 0) >= 1 },
+            { id: 'REFERRAL_STARTER', name: 'Friend Finder', description: 'Successfully refer 1 friend.', icon: 'fa-user-plus', condition: (user) => (user.referrals || 0) >= 1 },
+            { id: 'REFERRAL_PRO', name: 'Referral Pro', description: 'Successfully refer 5 friends.', icon: 'fa-users', condition: (user) => (user.referrals || 0) >= 5 },
+            { id: 'POINT_HOARDER', name: 'Point Hoarder', description: 'Earn a total of 50,000 points.', icon: 'fa-coins', condition: (user) => (user.totalPoints || 0) >= 50000 },
+        ];
+
+
+        let currentUserData = null; 
+        let wheelInitialized = false;
+        let systemSettings = {
+            pointsPerRupee: 10000,
+            signupBonus: 500,
+            referralBonus: 2500,
+            minWithdrawal: 5000,
+            maintenanceMode: false,
+            dailyLoginBonusPoints: 100,
+            dailyLoginBonusSpins: 2,
+            videoWatchRewardPoints: 500,
+            videoWatchRewardSpins: 1,
+            surveyCompleteRewardPoints: 2500,
+            surveyCompleteRewardSpins: 2,
+            signupSpins: 5,
+            dailyFreeSpins: 0,
+            leaderboardResetFrequency: 'weekly',
+            leaderboardTopPrizes: [
+                { rank: 1, points: 50000 },
+                { rank: 2, points: 25000 },
+                { rank: 3, points: 10000 }
+            ]
+        };
+        let userNotificationsListener = null;
+        let newUsersChartInstance = null;
+        
+        function showNotification(message, type = "info") {
+            const el = document.getElementById('notification');
+            el.querySelector('#notification-content').textContent = message;
+            el.className = `notification ${type} show`;
+            setTimeout(() => { el.classList.remove('show'); }, 5000);
+        }
+        
+        document.getElementById('notification-close').addEventListener('click', (e) => e.target.closest('.notification').classList.remove('show'));
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Theme setup ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme) {
+                document.body.classList.add(currentTheme);
+                if (currentTheme === 'dark-mode') themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', themeToggle.checked ? 'dark-mode' : 'light-mode');
+            });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('ref')) {
+                document.getElementById('referral-code-input').value = urlParams.get('ref');
+                showNotification(`Bonus applied! You were referred with code: ${urlParams.get('ref')}`, 'success');
+            }
+
+            // --- BUG FIX: Call settings listener ONCE when the app starts. ---
+            loadSystemSettingsFromFirestore();
+
+            auth.onAuthStateChanged(async user => {
+                // Settings are now loaded via the listener, no need to await here
+                if (systemSettings.maintenanceMode && (!user || (user && !(await isAdmin(user.uid))))) {
+                    document.getElementById('maintenance-overlay').style.display = 'flex';
+                    showAuth();
+                    return;
+                }
+                document.getElementById('maintenance-overlay').style.display = 'none';
+
+                if (user) {
+                    const success = await fetchUserData(user.uid);
+                    if (success) {
+                        if (currentUserData.status === 'banned') {
+                            showNotification('Your account has been suspended.', 'error');
+                            logoutUser();
+                            return;
+                        }
+                        showApp();
+                        updateUIWithUserData(); // Update UI with initial settings
+                        handleHashChange();
+                        listenForUserNotifications(user.uid);
+                    }
+                } else {
+                    currentUserData = null;
+                    if (userNotificationsListener) userNotificationsListener();
+                    showAuth();
+                }
+            });
+
+            window.addEventListener('hashchange', handleHashChange);
+            
+            // --- Event Listeners ---
+            document.querySelectorAll('.auth-tab').forEach(tab => tab.addEventListener('click', function() {
+                document.querySelectorAll('.auth-tab, .auth-form').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(`${this.dataset.tab}-form`).classList.add('active');
+            }));
+            document.getElementById('login-form').addEventListener('submit', e => { e.preventDefault(); loginUser(document.getElementById('login-email').value, document.getElementById('login-password').value); });
+            document.getElementById('register-form').addEventListener('submit', e => { e.preventDefault(); registerUser(document.getElementById('register-name').value, document.getElementById('register-email').value, document.getElementById('register-password').value, document.getElementById('register-phone').value); });
+            document.getElementById('logout-btn').addEventListener('click', logoutUser);
+            document.querySelectorAll('.nav-item, .feature-card, .back-button, .feature-card-nav').forEach(item => item.addEventListener('click', e => { 
+                e.preventDefault(); 
+                window.location.hash = '';
+                showScreen(item.dataset.target); 
+            }));
+            document.getElementById('edit-profile-btn').addEventListener('click', () => { populateEditProfileForm(); showScreen('edit-profile-screen'); });
+            document.getElementById('edit-profile-form').addEventListener('submit', handleProfileUpdate);
+            
+            document.getElementById('watch-video-btn').addEventListener('click', () => {
+                completeTask(systemSettings.videoWatchRewardPoints, systemSettings.videoWatchRewardSpins, 'Video Watched');
+            });
+
+            document.getElementById('complete-survey-btn').addEventListener('click', () => {
+                completeTask(systemSettings.surveyCompleteRewardPoints, systemSettings.surveyCompleteRewardSpins, 'Survey Completed');
+            });
+            
+            // Spin Wheel Logic
+            let isSpinning = false;
+            document.getElementById('spinBtn').addEventListener('click', async function() {
+                if (isSpinning || this.classList.contains('disabled')) return;
+                if ((currentUserData.spinsLeft || 0) <= 0) { showNotification('No spins left!', 'warning'); return; }
+                
+                isSpinning = true;
+                currentUserData.spinsLeft--;
+                updateUIWithUserData();
+                
+                const wheel = document.getElementById('wheelCircle');
+                const numSegments = spinRewards.length;
+                const segmentAngle = 360 / numSegments;
+                const winningIndex = Math.floor(Math.random() * numSegments);
+                const reward = spinRewards[winningIndex];
+                const stopAngle = (winningIndex * segmentAngle) + (segmentAngle / 2);
+                const totalRotation = (5 + Math.floor(Math.random() * 3)) * 360 + (360 - stopAngle);
+
+                wheel.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.4, 1)';
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+                
+                setTimeout(async () => {
+                    wheel.style.transition = 'none';
+                    wheel.style.transform = `rotate(${360 - stopAngle}deg)`;
+
+                    const newSpin = { id: 'spin-' + Date.now(), date: new Date().toISOString(), reward: reward.value, rewardText: reward.label };
+                    currentUserData.spinHistory = [newSpin, ...(currentUserData.spinHistory || [])];
+                    if (reward.value > 0) {
+                        showNotification(`Congratulations! You won: ${reward.label} Points`, "success");
+                        currentUserData.points += reward.value; 
+                        currentUserData.totalPoints += reward.value;
+                        await logUserTransaction(auth.currentUser.uid, 'spin_win', reward.value, `Spin Wheel - ${reward.label} Pts`);
+                    } else { 
+                        showNotification("Better luck next time!", "warning"); 
+                    }
+                    await updateUserData();
+                    isSpinning = false;
+                }, 4100);
+            });
+            
+            // Withdrawal Logic
+            document.querySelectorAll('.withdrawal-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.withdrawal-option, .payment-fields').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.method.replace(/\s+/g, '-')}-fields`)?.classList.add('active');
+                });
+            });
+            const redeemInput = document.getElementById('redeem-points-amount');
+            redeemInput.addEventListener('input', () => { 
+                document.getElementById('converted-amount').textContent = (parseInt(redeemInput.value, 10) / systemSettings.pointsPerRupee || 0).toFixed(2); 
+            });
+            document.getElementById('redeem-btn').addEventListener('click', handleRedemption);
+
+            // Referral Logic
+            document.getElementById('copy-link-btn').addEventListener('click', () => {
+                const link = `${window.location.origin}${window.location.pathname}?ref=${currentUserData.referralCode}`;
+                navigator.clipboard.writeText(link).then(() => showNotification('Referral link copied!', 'success'), () => showNotification('Could not copy link.', 'error'));
+            });
+
+            // Modals Logic
+            document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', () => document.getElementById(btn.dataset.modal).style.display = 'none'));
+            document.getElementById('forgot-password-link').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('forgot-password-modal').style.display = 'block'; });
+            document.getElementById('forgot-password-form').addEventListener('submit', handlePasswordReset);
+            
+            // --- Admin Listeners ---
+            document.getElementById('add-points-btn').addEventListener('click', () => { openModal('add-points-modal'); loadUsersForSelect('points-user-select'); });
+            document.getElementById('send-notification-btn').addEventListener('click', () => { openModal('send-notification-modal'); loadUsersForSelect('notification-user-select'); });
+            document.getElementById('system-settings-btn').addEventListener('click', () => { openModal('system-settings-modal'); loadSystemSettingsToForm(); });
+            document.getElementById('manage-offers-btn').addEventListener('click', () => { openModal('manage-offers-modal'); loadOffersForAdmin(); });
+
+            document.getElementById('add-points-form').addEventListener('submit', handleAddPoints);
+            document.getElementById('send-notification-form').addEventListener('submit', handleSendNotification);
+            document.getElementById('system-settings-form').addEventListener('submit', handleSystemSettings);
+            document.getElementById('offer-form').addEventListener('submit', handleOfferFormSubmit);
+            document.getElementById('clear-offer-form-btn').addEventListener('click', () => document.getElementById('offer-form').reset());
+            document.getElementById('edit-user-form').addEventListener('submit', handleAdminUserUpdate);
+            document.getElementById('user-search').addEventListener('input', (e) => filterAdminUserList(e.target.value));
+            document.getElementById('notification-target').addEventListener('change', (e) => {
+                document.getElementById('notification-user-select-group').style.display = e.target.value === 'specific' ? 'block' : 'none';
+            });
+            document.getElementById('add-spin-reward-btn').addEventListener('click', () => renderSpinRewardEditor(null, true));
+            document.getElementById('add-leaderboard-prize-btn').addEventListener('click', () => renderLeaderboardPrizeEditor(null, true));
+        });
+        
+        // --- Core Functions ---
+        
+        async function loginUser(email, password) {
+            try { await auth.signInWithEmailAndPassword(email, password); } 
+            catch (error) { showNotification(`Login failed: ${error.message}`, 'error'); }
+        }
+        
+        async function registerUser(name, email, password, phone) {
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                const newUser = {
+                    uid: user.uid, name, email, phone,
+                    points: systemSettings.signupBonus,
+                    totalPoints: systemSettings.signupBonus,
+                    referrals: 0, 
+                    referralPoints: 0,
+                    referralCode: 'DE' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    creationIp: `simulated-${Math.random().toString(36).substring(2, 10)}`,
+                    spinsLeft: systemSettings.signupSpins,
+                    role: 'user',
+                    status: 'active',
+                    lastLoginBonus: null,
+                    unlockedAchievements: []
+                };
+                
+                await db.collection('users').doc(user.uid).set(newUser);
+                await logUserTransaction(user.uid, 'signup_bonus', systemSettings.signupBonus, 'New user signup bonus');
+                await logUserTransaction(user.uid, 'spins_credit', systemSettings.signupSpins, 'Signup Spins');
+
+
+                const refCode = document.getElementById('referral-code-input').value;
+                if (refCode) {
+                    const q = await db.collection('users').where('referralCode', '==', refCode).limit(1).get();
+                    if (!q.empty) {
+                        const referrerDoc = q.docs[0];
+                        await db.collection('users').doc(referrerDoc.id).update({
+                            referralPoints: firebase.firestore.FieldValue.increment(systemSettings.referralBonus),
+                            referrals: firebase.firestore.FieldValue.increment(1)
+                        });
+                        await db.collection('users').doc(referrerDoc.id).collection('referredUsers').add({ name: name, date: new Date().toISOString(), uid: user.uid });
+                        await logUserTransaction(referrerDoc.id, 'referral_bonus', systemSettings.referralBonus, `Referred new user: ${name}`);
+                    }
+                }
+            } catch (error) { 
+                showNotification(`Registration failed: ${error.message}`, 'error'); 
+            }
+        }
+        
+        async function logoutUser() {
+            await auth.signOut();
+            window.location.hash = '';
+            window.location.reload();
+        }
+
+        async function fetchUserData(uid) {
+            try {
+                const userDoc = await db.collection('users').doc(uid).get();
+                if (!userDoc.exists) { logoutUser(); return false; }
+                currentUserData = userDoc.data();
+                
+                await handleDailyBonus();
+                
+                const [redemptionSnap, spinSnap, referralsSnap, transactionsSnap] = await Promise.all([
+                    db.collection('users').doc(uid).collection('redemptionHistory').orderBy('date', 'desc').get(),
+                    db.collection('users').doc(uid).collection('spinHistory').orderBy('date', 'desc').get(),
+                    db.collection('users').doc(uid).collection('referredUsers').orderBy('date', 'desc').get(),
+                    db.collection('users').doc(uid).collection('transactions').orderBy('timestamp', 'desc').get()
+                ]);
+
+                currentUserData.redemptionHistory = redemptionSnap.docs.map(doc => doc.data());
+                currentUserData.spinHistory = spinSnap.docs.map(doc => doc.data());
+                currentUserData.referredUsers = referralsSnap.docs.map(doc => doc.data());
+                currentUserData.transactions = transactionsSnap.docs.map(doc => doc.data());
+
+                await checkAndAwardAchievements();
+                return true;
+            } catch (error) {
+                console.error("Fetch User Data Error:", error);
+                logoutUser(); 
+                return false;
+            }
+        }
+        
+        async function handleDailyBonus() {
+            const today = new Date().toISOString().slice(0, 10);
+            if (currentUserData.lastLoginBonus !== today) {
+                const bonusPoints = systemSettings.dailyLoginBonusPoints;
+                const bonusSpins = systemSettings.dailyLoginBonusSpins;
+
+                currentUserData.points += bonusPoints; 
+                currentUserData.totalPoints += bonusPoints;
+                currentUserData.spinsLeft += bonusSpins; 
+                currentUserData.lastLoginBonus = today;
+                
+                await logUserTransaction(auth.currentUser.uid, 'daily_bonus', bonusPoints, 'Daily Login Bonus');
+                if(bonusSpins > 0) await logUserTransaction(auth.currentUser.uid, 'spins_credit', bonusSpins, 'Daily Login Spins');
+
+                await updateUserData(); 
+                showNotification(`Daily Bonus! You received ${bonusPoints} points and ${bonusSpins} spins.`, 'success');
+            }
+        }
+        
+        async function handlePasswordReset(e) {
+            e.preventDefault();
+            const email = document.getElementById('reset-email').value;
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showNotification('Password reset link sent! Check your email.', 'success');
+                closeAllModals();
+            } catch (error) {
+                showNotification(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function handleRedemption() {
+            const pointsToRedeem = parseInt(document.getElementById('redeem-points-amount').value, 10);
+            if (isNaN(pointsToRedeem) || pointsToRedeem < systemSettings.minWithdrawal) { return showNotification(`Minimum redemption is ${systemSettings.minWithdrawal} points.`, "error"); }
+            if (pointsToRedeem > currentUserData.points) { return showNotification("You don't have enough points.", "error"); }
+            
+            const selectedMethod = document.querySelector('.withdrawal-option.active').dataset.method;
+            const newTxn = { 
+                id: 'txn-' + Date.now(), 
+                date: new Date().toISOString(), 
+                points: pointsToRedeem, 
+                amount: (pointsToRedeem / systemSettings.pointsPerRupee), 
+                method: selectedMethod, 
+                status: 'Processing' 
+            };
+            
+            currentUserData.redemptionHistory.unshift(newTxn);
+            currentUserData.points -= pointsToRedeem;
+            await logUserTransaction(auth.currentUser.uid, 'redemption_request', -pointsToRedeem, `Redemption Request: ${newTxn.amount.toFixed(2)} via ${selectedMethod}`);
+            await updateUserData();
+            document.getElementById('redeem-points-amount').value = ''; 
+            document.getElementById('converted-amount').textContent = '0.00';
+            showNotification(`Request for ₹${newTxn.amount.toFixed(2)} submitted!`, "success");
+        }
+
+        async function updateUserData() {
+            if (!auth.currentUser) return;
+            await checkAndAwardAchievements();
+
+            const { redemptionHistory, spinHistory, referredUsers, transactions, ...mainUserData } = currentUserData; 
+            await db.collection('users').doc(auth.currentUser.uid).update(mainUserData);
+
+            await syncSubcollection('spinHistory', spinHistory);
+            await syncSubcollection('redemptionHistory', redemptionHistory);
+            
+            updateUIWithUserData();
+        }
+
+        async function syncSubcollection(collectionName, localData) {
+            if (localData && localData.length > 0) {
+                const latestItem = localData[0];
+                const itemRef = db.collection('users').doc(auth.currentUser.uid).collection(collectionName).doc(latestItem.id);
+                const doc = await itemRef.get();
+                if (!doc.exists) { await itemRef.set(latestItem); }
+            }
+        }
+        
+        async function logUserTransaction(uid, type, amount, description) {
+            if (!uid) return;
+            const userRef = db.collection('users').doc(uid);
+            await userRef.collection('transactions').add({
+                type,
+                amount,
+                description,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        
+        function updateUIWithUserData() {
+            if (!currentUserData) return;
+            const formatter = new Intl.NumberFormat('en-IN');
+            ['user-points', 'profile-points'].forEach(id => document.getElementById(id).textContent = formatter.format(currentUserData.points || 0));
+            document.getElementById('profile-total-points').textContent = formatter.format(currentUserData.totalPoints || 0);
+            document.getElementById('profile-referrals').textContent = currentUserData.referrals || 0;
+            document.getElementById('referral-points').textContent = formatter.format(currentUserData.referralPoints || 0);
+            document.getElementById('welcome-user').textContent = `Hello, ${currentUserData.name}!`;
+            document.getElementById('profile-name').textContent = currentUserData.name;
+            document.getElementById('profile-email').textContent = currentUserData.email;
+            document.getElementById('user-referral-code').textContent = currentUserData.referralCode || '...';
+            document.getElementById('spins-count').textContent = currentUserData.spinsLeft || 0;
+            document.getElementById('spinBtn').classList.toggle('disabled', (currentUserData.spinsLeft || 0) <= 0);
+            document.getElementById('spinBtn').textContent = (currentUserData.spinsLeft || 0) > 0 ? 'SPIN' : 'NO SPINS';
+            
+            // --- UI REFRESH LOGIC ---
+            document.getElementById('conversion-rate-text').innerHTML = `<strong>Conversion Rate:</strong> ${systemSettings.pointsPerRupee.toLocaleString('en-IN')} Points = ₹1`;
+            document.getElementById('referral-desc').textContent = `Get ${systemSettings.referralBonus.toLocaleString('en-IN')} Points for every friend who signs up`;
+            document.getElementById('video-reward-text').textContent = `${systemSettings.videoWatchRewardPoints.toLocaleString('en-IN')} Points`;
+            document.getElementById('survey-reward-text').textContent = `${systemSettings.surveyCompleteRewardPoints.toLocaleString('en-IN')} Points`;
+            
+            // --- FIX: Dynamically update withdrawal limit placeholder ---
+            document.getElementById('redeem-points-amount').placeholder = `Min ${systemSettings.minWithdrawal.toLocaleString('en-IN')} points`;
+
+
+            setupShareLinks(); 
+            renderRedemptionHistory(); 
+            renderSpinHistory(); 
+            renderReferralsList();
+            renderAchievements();
+            renderOffers();
+        }
+        
+        async function completeTask(points, spins, taskName) {
+            showNotification(`Completing '${taskName}'...`, 'info');
+            setTimeout(async () => {
+                currentUserData.points += points;
+                currentUserData.totalPoints += points;
+                currentUserData.spinsLeft += spins;
+                
+                await logUserTransaction(auth.currentUser.uid, 'task_reward', points, taskName + ' (Points)');
+                if (spins > 0) {
+                    await logUserTransaction(auth.currentUser.uid, 'spins_credit', spins, taskName + ' (Spins)');
+                }
+                
+                await updateUserData();
+                showNotification(`Task complete! +${points} points & +${spins} spin(s).`, 'success');
+            }, 500);
+        }
+
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            const name = document.getElementById('edit-profile-name').value;
+            const phone = document.getElementById('edit-profile-phone').value;
+            const newPassword = document.getElementById('edit-profile-password').value;
+            try {
+                await db.collection('users').doc(auth.currentUser.uid).update({ name, phone });
+                currentUserData.name = name;
+                currentUserData.phone = phone;
+                if (newPassword) await auth.currentUser.updatePassword(newPassword);
+                updateUIWithUserData();
+                showNotification('Profile updated successfully!', 'success');
+                showScreen('profile-screen');
+            } catch (error) {
+                showNotification(`Update failed: ${error.message}`, 'error');
+            }
+        }
+
+        function populateEditProfileForm() {
+            document.getElementById('edit-profile-name').value = currentUserData.name;
+            document.getElementById('edit-profile-email').value = currentUserData.email;
+            document.getElementById('edit-profile-phone').value = currentUserData.phone || '';
+            document.getElementById('edit-profile-password').value = '';
+        }
+
+        function createSpinWheel() {
+            if (wheelInitialized) return;
+            const wheel = document.getElementById('wheelCircle');
+            wheelInitialized = true;
+            wheel.innerHTML = '';
+            const numSegments = spinRewards.length;
+            const segmentAngle = 360 / numSegments;
+            const gradient = spinRewards.map((r, i) => `${r.color} ${i * segmentAngle}deg, ${r.color} ${(i + 1) * segmentAngle}deg`).join(', ');
+            wheel.style.background = `conic-gradient(${gradient})`;
+            spinRewards.forEach((reward, i) => {
+                const label = document.createElement('div');
+                label.className = 'wheel-label';
+                label.textContent = reward.label;
+                const angle = i * segmentAngle + (segmentAngle / 2);
+                const angleRad = (angle - 90) * (Math.PI / 180);
+                const radius = wheel.offsetWidth / 2 * 0.65;
+                label.style.transform = `translate(calc(-50% + ${Math.cos(angleRad) * radius}px), calc(-50% + ${Math.sin(angleRad) * radius}px)) rotate(${angle}deg)`;
+                wheel.appendChild(label);
+            });
+        }
+        
+        // --- Rendering Functions ---
+        const renderHistory = (containerId, data, emptyMsg, renderer) => {
+            const container = document.getElementById(containerId);
+            container.innerHTML = (!data || data.length === 0) ? `<p style="text-align: center; color: var(--gray); padding: 20px;">${emptyMsg}</p>` : data.map(renderer).join('');
+        };
+        const renderRedemptionHistory = () => {
+            // Check for a current processing transaction
+            const processingTxn = currentUserData?.redemptionHistory?.find(txn => txn.status === 'Processing');
+            const progressBar = document.getElementById('redemption-progress-bar');
+            if (processingTxn) {
+                progressBar.style.display = 'block';
+                // This is a visual example. Real logic would update this dynamically.
+                progressBar.querySelector('.progress-line-active').style.width = '50%';
+                progressBar.querySelector('.progress-step:nth-child(1)').classList.add('completed');
+                progressBar.querySelector('.progress-step:nth-child(2)').classList.add('active');
+                progressBar.querySelector('.progress-step:nth-child(3)').classList.remove('active', 'completed');
+            } else {
+                progressBar.style.display = 'none';
+            }
+            renderHistory('withdrawal-history', currentUserData?.redemptionHistory, 'No redemption history.', txn => `<div class="history-item"><div class="history-item-icon withdrawal"><i class="fas fa-wallet"></i></div><div class="history-item-details"><h4>Redeemed ${txn.points.toLocaleString('en-IN')} Pts</h4><p>₹${txn.amount.toFixed(2)} via ${txn.method}</p></div><div class="history-item-meta"><span class="history-item-date">${new Date(txn.date).toLocaleDateString()}</span><span class="history-item-status ${txn.status.toLowerCase()}">${txn.status}</span></div></div>`);
+        }
+        const renderSpinHistory = () => renderHistory('spin-history', currentUserData?.spinHistory, 'No spin history.', spin => `<div class="history-item"><div class="history-item-icon ${spin.reward > 0 ? 'reward' : 'no-reward'}"><i class="fas ${spin.reward > 0 ? 'fa-coins' : 'fa-times-circle'}"></i></div><div class="history-item-details"><h4>${spin.reward > 0 ? `Won ${spin.rewardText} Pts` : 'No Reward'}</h4><p>${new Date(spin.date).toLocaleString()}</p></div><div class="history-item-meta"><strong>${spin.reward > 0 ? '+' + spin.reward.toLocaleString('en-IN') : '0'}</strong></div></div>`);
+        const renderReferralsList = () => renderHistory('referrals-list', currentUserData?.referredUsers, "No referred users.", ref => `<div class="history-item"><div class="history-item-icon referral"><i class="fas fa-user-check"></i></div><div class="history-item-details"><h4>${ref.name}</h4><p>Joined on ${new Date(ref.date).toLocaleDateString()}</p></div><div class="history-item-meta"><strong>+${systemSettings.referralBonus.toLocaleString('en-IN')} Pts</strong></div></div>`);
+        
+        async function renderOffers() {
+            const container = document.getElementById('offers-grid-container');
+            const snapshot = await db.collection('offers').where('status', '==', 'active').get();
+            if (snapshot.empty) { container.innerHTML = `<p style="text-align: center; color: var(--gray); padding: 20px;">No offers available right now.</p>`; return; }
+            container.innerHTML = snapshot.docs.map(doc => {
+                const offer = doc.data();
+                return `<div class="offer-card"><h3>${offer.title}</h3><p>${offer.description}</p><div class="offer-price">${offer.points.toLocaleString('en-IN')} Points</div><button class="btn btn-primary" onclick="window.open('${offer.link}', '_blank')">Claim Offer</button></div>`
+            }).join('');
+        }
+
+        // --- Achievement Functions ---
+        function renderAchievements() {
+            const container = document.getElementById('achievements-grid-container');
+            if (!currentUserData) return;
+            const unlocked = currentUserData.unlockedAchievements || [];
+            container.innerHTML = achievementsList.map(ach => `<div class="achievement-card ${unlocked.includes(ach.id) ? 'unlocked' : 'locked'}"><div class="icon"><i class="fas ${ach.icon}"></i></div><h4>${ach.name}</h4><p>${ach.description}</p></div>`).join('');
+        }
+
+        async function checkAndAwardAchievements() {
+            if (!currentUserData) return;
+            let needsUpdate = false;
+            for (const ach of achievementsList) {
+                if (!currentUserData.unlockedAchievements?.includes(ach.id) && ach.condition(currentUserData)) {
+                    currentUserData.unlockedAchievements = [...(currentUserData.unlockedAchievements || []), ach.id];
+                    needsUpdate = true;
+                    showNotification(`Achievement Unlocked: ${ach.name}!`, 'success');
+                }
+            }
+            if (needsUpdate) await db.collection('users').doc(auth.currentUser.uid).update({unlockedAchievements: currentUserData.unlockedAchievements});
+        }
+        
+        // --- UI & Navigation ---
+        function setupShareLinks() {
+            if (!currentUserData) return;
+            const text = encodeURIComponent(`Join DailyEarn with my code ${currentUserData.referralCode} & get a bonus!`);
+            const link = encodeURIComponent(`${window.location.origin}${window.location.pathname}?ref=${currentUserData.referralCode}`);
+            document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${text}%20${link}`;
+            document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+            document.getElementById('telegram-share').href = `https://t.me/share/url?url=${link}&text=${text}`;
+            document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?url=${link}&text=${text}`;
+        }
+        
+        function showScreen(screenId) {
+            document.querySelectorAll('#app-screen .screen-container').forEach(s => s.classList.remove('screen-active'));
+            document.getElementById(screenId)?.classList.add('screen-active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.target === screenId));
+            
+            if (screenId === 'spin-screen') createSpinWheel();
+            if (screenId === 'leaderboard-screen') loadLeaderboard();
+        }
+
+        function showApp() {
+            document.getElementById('auth-screen').classList.remove('screen-active');
+            document.getElementById('app-screen').classList.add('screen-active');
+            document.getElementById('app-footer').style.display = 'flex';
+        }
+        
+        function showAuth() {
+            document.getElementById('app-screen').classList.remove('screen-active');
+            document.getElementById('auth-screen').classList.add('screen-active');
+            document.getElementById('app-footer').style.display = 'none';
+        }
+        
+        function listenForUserNotifications(uid) {
+            if (userNotificationsListener) userNotificationsListener();
+            userNotificationsListener = db.collection('users').doc(uid).collection('user_notifications').where('read', '==', false)
+                .onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            const notif = change.doc.data();
+                            showNotification(`${notif.title}: ${notif.message}`, notif.type);
+                            db.collection('users').doc(uid).collection('user_notifications').doc(change.doc.id).update({ read: true });
+                        }
+                    });
+                });
+        }
+
+        async function loadLeaderboard() {
+            const listEl = document.getElementById('leaderboard-list');
+            listEl.innerHTML = '<li>Loading...</li>';
+            const snapshot = await db.collection('users').orderBy('points', 'desc').limit(10).get();
+            listEl.innerHTML = snapshot.docs.map((doc, index) => {
+                const user = doc.data();
+                return `<li class="leaderboard-item"><div class="leaderboard-rank">${index + 1}</div><div class="leaderboard-user">${user.name}</div><div class="leaderboard-amount">${user.points.toLocaleString('en-IN')} Pts</div></li>`;
+            }).join('');
+            const allUsersSnap = await db.collection('users').orderBy('points', 'desc').get();
+            const userRank = allUsersSnap.docs.findIndex(doc => doc.id === auth.currentUser.uid) + 1;
+            document.getElementById('user-rank').textContent = userRank > 0 ? userRank : 'N/A';
+            document.getElementById('user-points-earned').textContent = currentUserData.points.toLocaleString('en-IN');
+        }
+
+        // --- Admin Panel Functions ---
+        async function handleHashChange() {
+            if (window.location.hash === '#admin' && auth.currentUser) {
+                const isAdminUser = await isAdmin(auth.currentUser.uid);
+                if (isAdminUser) {
+                    showScreen('admin-screen');
+                    loadAdminData();
+                } else {
+                    showNotification('Access Denied.', 'error');
+                    window.location.hash = ''; 
+                }
+            }
+        }
+        const isAdmin = async (uid) => {
+            const userDoc = await db.collection('users').doc(uid).get();
+            return userDoc.exists && userDoc.data().role === 'admin';
+        };
+
+        async function loadAdminData() {
+            loadAdminStats();
+            loadUsersList();
+            loadFlaggedUsers();
+            loadWithdrawalRequests();
+            loadTopUsers();
+            loadNotificationHistory();
+            loadAdminAuditLog();
+        }
+
+        async function loadAdminStats() {
+            const usersSnap = await db.collection('users').get();
+            let totalPoints = 0, totalWithdrawn = 0, pendingWithdrawals = 0;
+            const newUsersByDay = {};
+
+            for (const doc of usersSnap.docs) {
+                const user = doc.data();
+                totalPoints += user.points || 0;
+                
+                const userRedemptionSnap = await db.collection('users').doc(doc.id).collection('redemptionHistory').get();
+                userRedemptionSnap.docs.forEach(txnDoc => {
+                    const txn = txnDoc.data();
+                    if(txn.status === 'Completed') totalWithdrawn += txn.amount;
+                    if(txn.status === 'Processing') pendingWithdrawals++;
+                });
+
+                if (user.createdAt && user.createdAt.toDate) {
+                    const date = user.createdAt.toDate().toISOString().slice(0, 10);
+                    newUsersByDay[date] = (newUsersByDay[date] || 0) + 1;
+                }
+            }
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const newUsersSnap = await db.collection('users').where('createdAt', '>=', yesterday).get();
+
+            document.getElementById('total-users').textContent = usersSnap.size.toLocaleString('en-IN');
+            document.getElementById('new-users-24h').textContent = newUsersSnap.size.toLocaleString('en-IN');
+            document.getElementById('total-points-circulating').textContent = totalPoints.toLocaleString('en-IN');
+            document.getElementById('pending-withdrawals').textContent = pendingWithdrawals.toLocaleString('en-IN');
+            document.getElementById('total-withdrawn-amount').textContent = `₹${totalWithdrawn.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
+
+            renderNewUsersChart(newUsersByDay);
+        }
+        
+        async function loadUsersList() {
+            const listEl = document.getElementById('admin-users-list');
+            listEl.innerHTML = '<p>Loading users...</p>';
+            const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
+            listEl.innerHTML = snapshot.docs.map(doc => {
+                const user = doc.data();
+                const userRole = user.role || 'user';
+                return `
+                    <div class="admin-user-item" data-name="${user.name.toLowerCase()}" data-email="${user.email.toLowerCase()}">
+                        <div class="admin-user-info">
+                            <h4>${user.name} ${userRole === 'admin' ? '<i class="fas fa-star" style="color:var(--warning);"></i>' : ''}</h4>
+                            <p>${user.email} | ${user.status === 'banned' ? '<strong style="color:var(--danger)">BANNED</strong>' : 'Active'}</p>
+                            <p><strong>Pts:</strong> ${user.points.toLocaleString('en-IN')} | <strong>Spins:</strong> ${user.spinsLeft || 0}</p>
+                        </div>
+                        <div class="admin-user-actions">
+                            <button class="btn btn-primary btn-sm" onclick="openEditUserModal('${doc.id}')">Edit</button>
+                            <button class="btn btn-warning btn-sm" onclick="showUserDetailsModal('${doc.id}')">View</button>
+                            <button class="btn ${user.status === 'banned' ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleUserBan('${doc.id}', '${user.status}')">${user.status === 'banned' ? 'Unban' : 'Ban'}</button>
+                            <button class="btn btn-secondary btn-sm" onclick="toggleUserAdminRole('${doc.id}', '${userRole}')">${userRole === 'admin' ? 'Remove Admin' : 'Make Admin'}</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        async function loadFlaggedUsers() {
+            const listEl = document.getElementById('flagged-users-list');
+            listEl.innerHTML = '<p>Checking for suspicious accounts...</p>';
+
+            const usersSnap = await db.collection('users').get();
+            const ipMap = new Map();
+            const flaggedUsers = [];
+
+            for (const doc of usersSnap.docs) {
+                const user = doc.data();
+                if (user.creationIp) {
+                    if (!ipMap.has(user.creationIp)) {
+                        ipMap.set(user.creationIp, []);
+                    }
+                    ipMap.get(user.creationIp).push({ id: doc.id, name: user.name, email: user.email, status: user.status });
+                }
+            }
+
+            for (const [ip, users] of ipMap.entries()) {
+                if (users.length > 1) {
+                    flaggedUsers.push({ ip, users });
+                }
+            }
+            
+            if (flaggedUsers.length === 0) {
+                listEl.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 20px;">No flagged users found.</p>';
+            } else {
+                listEl.innerHTML = flaggedUsers.map(flaggedGroup => `
+                    <div class="card" style="margin-bottom: 15px;">
+                        <h4 class="card-title" style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i> Shared IP: ${flaggedGroup.ip}</h4>
+                        <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 10px;">${flaggedGroup.users.length} accounts share this IP:</p>
+                        ${flaggedGroup.users.map(user => `
+                            <div class="history-item">
+                                <div class="history-item-icon"><i class="fas fa-user"></i></div>
+                                <div class="history-item-details">
+                                    <h4>${user.name} (${user.email})</h4>
+                                    <p>Status: ${user.status === 'banned' ? '<strong style="color:var(--danger)">BANNED</strong>' : 'Active'}</p>
+                                </div>
+                                <div class="history-item-meta">
+                                    <button class="btn btn-warning btn-sm" onclick="showUserDetailsModal('${user.id}')">View</button>
+                                    <button class="btn ${user.status === 'banned' ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleUserBan('${user.id}', '${user.status}')">${user.status === 'banned' ? 'Unban' : 'Ban'}</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('');
+            }
+        }
+        
+        const filterAdminUserList = (term) => {
+            const searchTerm = term.toLowerCase();
+            document.querySelectorAll('.admin-user-item').forEach(item => {
+                item.style.display = (item.dataset.name.includes(searchTerm) || item.dataset.email.includes(searchTerm)) ? 'grid' : 'none';
+            });
+        };
+        
+        async function loadWithdrawalRequests() {
+            const pendingListEl = document.getElementById('withdrawal-requests-list');
+            const processedListEl = document.getElementById('processed-withdrawals-list');
+            pendingListEl.innerHTML = '<p>Scanning for requests...</p>';
+            processedListEl.innerHTML = '<p>Loading processed requests...</p>';
+            
+            const usersSnap = await db.collection('users').get();
+            let pendingRequests = [];
+            let processedRequests = [];
+
+            for (const doc of usersSnap.docs) {
+                const userRedemptionSnap = await db.collection('users').doc(doc.id).collection('redemptionHistory').get();
+                userRedemptionSnap.docs.forEach(txnDoc => {
+                    const txn = txnDoc.data();
+                    const requestData = {...txn, userName: doc.data().name, userId: doc.id, docId: txnDoc.id};
+                    if (txn.status === 'Processing') {
+                        pendingRequests.push(requestData);
+                    } else {
+                        processedRequests.push(requestData);
+                    }
+                });
+            }
+
+            pendingRequests.sort((a, b) => new Date(b.date) - new Date(a.date));
+            processedRequests.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            renderHistory('withdrawal-requests-list', pendingRequests, 'No pending requests.', req => `
+                <div class="history-item">
+                    <div class="history-item-details">
+                        <h4>${req.userName} - ${req.points.toLocaleString('en-IN')} Pts</h4>
+                        <p>₹${req.amount.toFixed(2)} via ${req.method} on ${new Date(req.date).toLocaleDateString()}</p>
+                    </div>
+                    <div class="history-item-meta">
+                        <button class="btn btn-success btn-sm" onclick="processWithdrawal('${req.userId}', '${req.docId}', 'Completed', ${req.points})">Approve</button>
+                        <button class="btn btn-danger btn-sm" onclick="processWithdrawal('${req.userId}', '${req.docId}', 'Rejected', ${req.points})">Reject</button>
+                    </div>
+                </div>
+            `);
+
+            renderHistory('processed-withdrawals-list', processedRequests.slice(0, 10), 'No processed withdrawals yet.', req => `
+                <div class="history-item">
+                    <div class="history-item-icon withdrawal"><i class="fas fa-${req.status === 'Completed' ? 'check' : 'times'}"></i></div>
+                    <div class="history-item-details">
+                        <h4>${req.userName} - ${req.points.toLocaleString('en-IN')} Pts</h4>
+                        <p>₹${req.amount.toFixed(2)} via ${req.method}</p>
+                    </div>
+                    <div class="history-item-meta">
+                        <span class="history-item-date">${new Date(req.date).toLocaleDateString()}</span>
+                        <span class="history-item-status ${req.status.toLowerCase()}">${req.status}</span>
+                    </div>
+                </div>
+            `);
+        }
+
+        async function loadTopUsers() {
+            const listEl = document.getElementById('admin-top-users-list');
+            const snapshot = await db.collection('users').orderBy('points', 'desc').limit(5).get();
+            listEl.innerHTML = snapshot.docs.map((doc, index) => {
+                const user = doc.data();
+                return `<div class="leaderboard-item"><div class="leaderboard-rank">${index + 1}</div><div class="leaderboard-user">${user.name}</div><div class="leaderboard-amount">${user.points.toLocaleString('en-IN')} Pts</div></div>`;
+            }).join('');
+        }
+
+        async function loadNotificationHistory() {
+            const listEl = document.getElementById('admin-notification-history');
+            const snapshot = await db.collection('notifications').orderBy('createdAt', 'desc').limit(5).get();
+            renderHistory('admin-notification-history', snapshot.docs.map(d=>d.data()), 'No global notifications sent.', n => `
+                <div class="history-item"><div class="history-item-details"><h4>${n.title}</h4><p>${n.message}</p></div><div class="history-item-meta"><span>${new Date(n.createdAt.toDate()).toLocaleDateString()}</span><span class="history-item-status ${n.type}">${n.type}</span></div></div>
+            `);
+        }
+
+        async function processWithdrawal(userId, txnDocId, status, pointsRefund) {
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const userRedemptionRef = userRef.collection('redemptionHistory').doc(txnDocId);
+                
+                const txnDoc = await userRedemptionRef.get();
+                if (!txnDoc.exists || txnDoc.data().status !== 'Processing') {
+                    showNotification('Request already processed or not found.', 'warning');
+                    return;
+                }
+                
+                await userRedemptionRef.update({ status });
+
+                if (status === 'Rejected') {
+                    await userRef.update({ points: firebase.firestore.FieldValue.increment(pointsRefund) });
+                    await logUserTransaction(userId, 'redemption_refund', pointsRefund, `Redemption request rejected, points refunded`);
+                }
+                await logAdminAction(userId, 'withdrawal_processed', { txnId: txnDocId, status, pointsRefunded: status === 'Rejected' ? pointsRefund : 0 });
+                showNotification(`Withdrawal ${status.toLowerCase()}!`, 'success');
+                loadAdminData();
+            } catch (error) {
+                showNotification(`Failed to process withdrawal: ${error.message}`, 'error');
+            }
+        }
+
+        async function toggleUserBan(uid, currentStatus) {
+            if (confirm(`Are you sure you want to ${currentStatus === 'banned' ? 'unban' : 'ban'} this user?`)) {
+                try {
+                    const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
+                    await db.collection('users').doc(uid).update({ status: newStatus });
+                    await logAdminAction(uid, 'user_ban_status_changed', { newStatus });
+                    showNotification(`User has been ${newStatus}.`, 'success');
+                    loadUsersList();
+                    loadFlaggedUsers();
+                } catch (error) {
+                    showNotification(`Failed to update status: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function toggleUserAdminRole(uid, currentRole) {
+            if (uid === auth.currentUser.uid) {
+                showNotification("You cannot change your own role.", "error");
+                return;
+            }
+            const newRole = currentRole === 'admin' ? 'user' : 'admin';
+            if (confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+                try {
+                    await db.collection('users').doc(uid).update({ role: newRole });
+                    await logAdminAction(uid, 'user_role_changed', { newRole });
+                    showNotification(`User role updated to ${newRole}.`, 'success');
+                    loadUsersList();
+                } catch (error) {
+                    showNotification(`Failed to update role: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function loadAdminAuditLog() {
+            const listEl = document.getElementById('admin-audit-log-list');
+            const snapshot = await db.collection('adminAuditLog').orderBy('timestamp', 'desc').limit(10).get();
+            renderHistory('admin-audit-log-list', snapshot.docs.map(d => d.data()), 'No admin actions recorded yet.', log => `
+                <div class="history-item">
+                    <div class="history-item-icon admin-action"><i class="fas fa-user-cog"></i></div>
+                    <div class="history-item-details">
+                        <h4>${log.type.replace(/_/g, ' ').toUpperCase()}</h4>
+                        <p>By: <strong>${log.adminName || 'Admin'}</strong> on User ID: ...${log.targetUserId.slice(-6)}</p>
+                    </div>
+                    <div class="history-item-meta">
+                        <span class="history-item-date">${new Date(log.timestamp.toDate()).toLocaleString()}</span>
+                    </div>
+                </div>
+            `);
+        }
+
+        function renderNewUsersChart(data) {
+            const ctx = document.getElementById('new-users-chart').getContext('2d');
+            const sortedDates = Object.keys(data).sort((a,b) => new Date(a) - new Date(b));
+            
+            const labels = sortedDates.slice(-7);
+            const chartData = labels.map(date => data[date]);
+
+            if (newUsersChartInstance) {
+                newUsersChartInstance.destroy();
+            }
+
+            newUsersChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'New Users Per Day',
+                        data: chartData,
+                        backgroundColor: 'rgba(94, 92, 230, 0.2)',
+                        borderColor: 'rgba(94, 92, 230, 1)',
+                        borderWidth: 2,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        async function openEditUserModal(uid) {
+            const userDoc = await db.collection('users').doc(uid).get();
+            if (!userDoc.exists) return;
+            const userData = userDoc.data();
+            document.getElementById('modal-user-name').textContent = `Edit: ${userData.name}`;
+            document.getElementById('edit-user-uid').value = uid;
+            document.getElementById('edit-user-points').value = userData.points || 0;
+            document.getElementById('edit-user-spins').value = userData.spinsLeft || 0;
+            openModal('edit-user-modal');
+        }
+
+        async function handleAdminUserUpdate(e) {
+            e.preventDefault();
+            const uid = document.getElementById('edit-user-uid').value;
+            const newPoints = parseInt(document.getElementById('edit-user-points').value, 10);
+            const newSpinsLeft = parseInt(document.getElementById('edit-user-spins').value, 10);
+            
+            try {
+                const userRef = db.collection('users').doc(uid);
+                const userDoc = await userRef.get();
+                if (!userDoc.exists) throw new Error("User not found");
+                const oldData = userDoc.data();
+
+                await userRef.update({ points: newPoints, spinsLeft: newSpinsLeft });
+
+                const pointsDiff = newPoints - oldData.points;
+                const spinsDiff = newSpinsLeft - oldData.spinsLeft;
+
+                if (pointsDiff !== 0) await logUserTransaction(uid, pointsDiff > 0 ? 'admin_credit' : 'admin_debit', pointsDiff, `Admin points adjustment`);
+                if (spinsDiff !== 0) await logUserTransaction(uid, spinsDiff > 0 ? 'admin_spins_credit' : 'admin_spins_debit', spinsDiff, `Admin spins adjustment`);
+                
+                await logAdminAction(uid, 'user_edited', { oldPoints: oldData.points, newPoints, oldSpins: oldData.spinsLeft, newSpins: newSpinsLeft });
+                showNotification('User updated!', 'success');
+                closeAllModals();
+                loadAdminData();
+            } catch (error) {
+                showNotification(`Failed to update user: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadUsersForSelect(selectId) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">Loading...</option>';
+            const snapshot = await db.collection('users').orderBy('name').get();
+            select.innerHTML = `<option value="">Select a user</option>`;
+            snapshot.forEach(doc => {
+                const user = doc.data();
+                select.innerHTML += `<option value="${doc.id}">${user.name} (${user.email})</option>`;
+            });
+        }
+
+        async function handleAddPoints(e) {
+            e.preventDefault();
+            const userId = document.getElementById('points-user-select').value;
+            const points = parseInt(document.getElementById('points-amount').value, 10);
+            const reason = document.getElementById('points-reason').value || 'Manual addition';
+            if (!userId || isNaN(points) || points <= 0) return showNotification('Invalid data.', 'error');
+            
+            try {
+                const userRef = db.collection('users').doc(userId);
+                await userRef.update({
+                    points: firebase.firestore.FieldValue.increment(points),
+                    totalPoints: firebase.firestore.FieldValue.increment(points)
+                });
+                await logUserTransaction(userId, 'admin_credit', points, reason);
+                await logAdminAction(userId, 'points_added', { points, reason });
+                showNotification(`Added ${points} points!`, 'success');
+                closeAllModals();
+                loadAdminData();
+            } catch (error) {
+                showNotification(`Failed to add points: ${error.message}`, 'error');
+            }
+        }
+
+        async function handleSendNotification(e) {
+            e.preventDefault();
+            const target = document.getElementById('notification-target').value;
+            const title = document.getElementById('notification-title').value;
+            const message = document.getElementById('notification-message').value;
+            const type = document.getElementById('notification-type').value;
+
+            try {
+                if (target === 'all') {
+                    await db.collection('notifications').add({ title, message, type, createdAt: new Date() });
+                    await logAdminAction('all_users', 'global_notification_sent', { title });
+                    showNotification('Global notification sent!', 'success');
+                } else {
+                    const userId = document.getElementById('notification-user-select').value;
+                    if (!userId) return showNotification('Please select a user.', 'error');
+                    await db.collection('users').doc(userId).collection('user_notifications').add({ title, message, type, createdAt: new Date(), read: false });
+                    await logAdminAction(userId, 'user_notification_sent', { title });
+                    showNotification(`Notification sent to user!`, 'success');
+                }
+                closeAllModals();
+                loadAdminData();
+            } catch (error) {
+                showNotification(`Failed to send notification: ${error.message}`, 'error');
+            }
+        }
+        
+        // --- REAL-TIME SETTINGS LISTENER ---
+        function loadSystemSettingsFromFirestore() {
+            const settingsRef = db.collection('systemSettings').doc('appSettings');
+            
+            settingsRef.onSnapshot((doc) => {
+                if (doc.exists) {
+                    const settingsData = doc.data();
+                    systemSettings = { ...systemSettings, ...settingsData };
+                    if (settingsData.spinRewards) {
+                        spinRewards = settingsData.spinRewards;
+                        wheelInitialized = false; // Force wheel rebuild on next visit
+                    }
+                    // If a user is already logged in, refresh their UI with new settings
+                    if (currentUserData) {
+                        updateUIWithUserData();
+                    }
+                }
+            }, (error) => {
+                console.error("Error listening to system settings:", error);
+                showNotification('Error: Could not load system settings in real-time.', 'error');
+            });
+        }
+
+
+        function loadSystemSettingsToForm() {
+            document.getElementById('maintenance-mode-toggle').checked = systemSettings.maintenanceMode;
+            document.getElementById('points-per-rupee').value = systemSettings.pointsPerRupee;
+            document.getElementById('signup-bonus').value = systemSettings.signupBonus;
+            document.getElementById('referral-bonus').value = systemSettings.referralBonus;
+            document.getElementById('min-withdrawal').value = systemSettings.minWithdrawal;
+            
+            document.getElementById('daily-login-points').value = systemSettings.dailyLoginBonusPoints;
+            document.getElementById('daily-login-spins').value = systemSettings.dailyLoginBonusSpins;
+            document.getElementById('video-reward-points').value = systemSettings.videoWatchRewardPoints;
+            document.getElementById('video-reward-spins').value = systemSettings.videoWatchRewardSpins;
+            document.getElementById('survey-reward-points').value = systemSettings.surveyCompleteRewardPoints;
+            document.getElementById('survey-reward-spins').value = systemSettings.surveyCompleteRewardSpins;
+            document.getElementById('signup-spins').value = systemSettings.signupSpins;
+            document.getElementById('daily-free-spins').value = systemSettings.dailyFreeSpins;
+
+            document.getElementById('leaderboard-reset-frequency').value = systemSettings.leaderboardResetFrequency;
+            renderLeaderboardPrizeEditor(systemSettings.leaderboardTopPrizes);
+
+            renderSpinRewardEditor(spinRewards);
+        }
+
+        function renderLeaderboardPrizeEditor(prizes, addNew = false) {
+            const editor = document.getElementById('leaderboard-prizes-editor');
+            if (prizes) {
+                editor.innerHTML = prizes.map((prize, index) => `
+                    <div class="form-group-inline" id="prize-editor-${index}">
+                        <label style="flex-basis: 50px;">Rank:</label>
+                        <input type="number" value="${prize.rank || ''}" placeholder="Rank" min="1" style="width: 60px;">
+                        <label style="flex-basis: 50px;">Points:</label>
+                        <input type="number" value="${prize.points || ''}" placeholder="Points" min="0">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+            if(addNew) {
+                 editor.innerHTML += `
+                    <div class="form-group-inline" id="prize-editor-${Date.now()}">
+                        <label style="flex-basis: 50px;">Rank:</label>
+                        <input type="number" placeholder="Rank" min="1" style="width: 60px;">
+                        <label style="flex-basis: 50px;">Points:</label>
+                        <input type="number" placeholder="Points" min="0">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderSpinRewardEditor(rewards, addNew = false) {
+            const editor = document.getElementById('spin-rewards-editor');
+            if (rewards) {
+                editor.innerHTML = rewards.map((reward, index) => `
+                    <div class="form-group-inline" id="reward-editor-${index}">
+                        <input type="text" value="${reward.label || ''}" placeholder="Label">
+                        <input type="number" value="${reward.value === 0 ? '0' : (reward.value || '')}" placeholder="Value">
+                        <input type="color" value="${reward.color || '#4361ee'}">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+            if(addNew) {
+                 editor.innerHTML += `
+                    <div class="form-group-inline" id="reward-editor-${Date.now()}">
+                        <input type="text" placeholder="Label">
+                        <input type="number" placeholder="Value">
+                        <input type="color" value="#4361ee">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            }
+        }
+        
+        async function handleSystemSettings(e) {
+            e.preventDefault();
+            try {
+                // --- BUG FIX: Use '|| 0' to prevent NaN errors on empty fields ---
+                const newSettings = {
+                    maintenanceMode: document.getElementById('maintenance-mode-toggle').checked,
+                    pointsPerRupee: parseInt(document.getElementById('points-per-rupee').value) || 10000,
+                    signupBonus: parseInt(document.getElementById('signup-bonus').value) || 0,
+                    referralBonus: parseInt(document.getElementById('referral-bonus').value) || 0,
+                    minWithdrawal: parseInt(document.getElementById('min-withdrawal').value) || 0,
+                    dailyLoginBonusPoints: parseInt(document.getElementById('daily-login-points').value) || 0,
+                    dailyLoginBonusSpins: parseInt(document.getElementById('daily-login-spins').value) || 0,
+                    videoWatchRewardPoints: parseInt(document.getElementById('video-reward-points').value) || 0,
+                    videoWatchRewardSpins: parseInt(document.getElementById('video-reward-spins').value) || 0,
+                    surveyCompleteRewardPoints: parseInt(document.getElementById('survey-reward-points').value) || 0,
+                    surveyCompleteRewardSpins: parseInt(document.getElementById('survey-reward-spins').value) || 0,
+                    signupSpins: parseInt(document.getElementById('signup-spins').value) || 0,
+                    dailyFreeSpins: parseInt(document.getElementById('daily-free-spins').value) || 0,
+                    leaderboardResetFrequency: document.getElementById('leaderboard-reset-frequency').value,
+                };
+
+                const updatedLeaderboardPrizes = [];
+                document.querySelectorAll('#leaderboard-prizes-editor .form-group-inline').forEach(el => {
+                    const rank = parseInt(el.children[1].value);
+                    const points = parseInt(el.children[3].value);
+                    if (!isNaN(rank) && !isNaN(points)) {
+                        updatedLeaderboardPrizes.push({ rank, points });
+                    }
+                });
+                newSettings.leaderboardTopPrizes = updatedLeaderboardPrizes.sort((a,b) => a.rank - b.rank);
+
+                const updatedSpinRewards = [];
+                document.querySelectorAll('#spin-rewards-editor .form-group-inline').forEach(el => {
+                    const label = el.children[0].value;
+                    const value = parseInt(el.children[1].value);
+                    const color = el.children[2].value;
+                    if (label && !isNaN(value)) {
+                         updatedSpinRewards.push({ label, value, color });
+                    }
+                });
+                newSettings.spinRewards = updatedSpinRewards;
+
+                await db.collection('systemSettings').doc('appSettings').set(newSettings, { merge: true });
+                await logAdminAction('system', 'settings_updated', {}); // Simplified log
+                showNotification('Settings saved successfully!', 'success');
+                closeAllModals();
+            } catch (error) {
+                showNotification(`Failed to save settings: ${error.message}`, 'error');
+            }
+        }
+
+        async function loadOffersForAdmin() {
+            const container = document.getElementById('offers-list-admin');
+            const snapshot = await db.collection('offers').orderBy('title').get();
+            renderHistory('offers-list-admin', snapshot.docs, 'No offers created yet.', doc => {
+                const offer = doc.data();
+                return `<div class="history-item">
+                    <div class="history-item-details"><h4>${offer.title}</h4><p>${offer.points} Pts | Status: ${offer.status}</p></div>
+                    <div class="history-item-meta">
+                        <button class="btn btn-primary btn-sm" onclick="editOffer('${doc.id}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteOffer('${doc.id}')">Delete</button>
+                    </div>
+                </div>`;
+            });
+        }
+        
+        async function handleOfferFormSubmit(e) {
+            e.preventDefault();
+            const offerId = document.getElementById('offer-id').value;
+            const offerData = {
+                title: document.getElementById('offer-title').value,
+                description: document.getElementById('offer-description').value,
+                points: parseInt(document.getElementById('offer-points').value) || 0,
+                link: document.getElementById('offer-link').value,
+                status: document.getElementById('offer-status').value
+            };
+            try {
+                if (offerId) {
+                    await db.collection('offers').doc(offerId).update(offerData);
+                    await logAdminAction(offerId, 'offer_edited', { title: offerData.title });
+                } else {
+                    const newOffer = await db.collection('offers').add(offerData);
+                    await logAdminAction(newOffer.id, 'offer_created', { title: offerData.title });
+                }
+                showNotification('Offer saved!', 'success');
+                document.getElementById('offer-form').reset();
+                document.getElementById('offer-id').value = '';
+                loadOffersForAdmin();
+            } catch (error) {
+                showNotification(`Failed to save offer: ${error.message}`, 'error');
+            }
+        }
+
+        async function editOffer(id) {
+            const doc = await db.collection('offers').doc(id).get();
+            if (!doc.exists) return;
+            const data = doc.data();
+            document.getElementById('offer-id').value = id;
+            document.getElementById('offer-title').value = data.title;
+            document.getElementById('offer-description').value = data.description;
+            document.getElementById('offer-points').value = data.points;
+            document.getElementById('offer-link').value = data.link;
+            document.getElementById('offer-status').value = data.status;
+        }
+
+        async function deleteOffer(id) {
+            if (confirm('Are you sure you want to delete this offer?')) {
+                try {
+                    await db.collection('offers').doc(id).delete();
+                    await logAdminAction(id, 'offer_deleted', {});
+                    showNotification('Offer deleted!', 'success');
+                    loadOffersForAdmin();
+                } catch (error) {
+                    showNotification(`Failed to delete offer: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        async function showUserDetailsModal(uid) {
+            const modal = document.getElementById('user-details-modal');
+            const modalContent = document.getElementById('details-modal-content');
+            document.getElementById('details-modal-user-name').textContent = 'Loading...';
+            modalContent.innerHTML = '<p>Loading details...</p>';
+            openModal('user-details-modal');
+
+            const userDoc = await db.collection('users').doc(uid).get();
+            const userData = userDoc.data();
+            document.getElementById('details-modal-user-name').textContent = `${userData.name}'s Details`;
+
+            const [spinSnap, redeemSnap, refSnap, adminLogSnap, transactionsSnap] = await Promise.all([
+                db.collection('users').doc(uid).collection('spinHistory').orderBy('date', 'desc').limit(5).get(),
+                db.collection('users').doc(uid).collection('redemptionHistory').orderBy('date', 'desc').limit(5).get(),
+                db.collection('users').doc(uid).collection('referredUsers').orderBy('date', 'desc').limit(5).get(),
+                db.collection('users').doc(uid).collection('adminActions').orderBy('timestamp', 'desc').limit(5).get(),
+                db.collection('users').doc(uid).collection('transactions').orderBy('timestamp', 'desc').limit(15).get()
+            ]);
+
+            let fraudWarning = '';
+            if (userData.creationIp) {
+                const sameIpSnap = await db.collection('users').where('creationIp', '==', userData.creationIp).get();
+                if (sameIpSnap.size > 1) {
+                    const otherUsers = sameIpSnap.docs.filter(doc => doc.id !== uid).map(doc => doc.data().name).join(', ');
+                    fraudWarning = `<div style="padding: 10px; background-color: var(--danger); color: white; border-radius: 8px; margin-bottom: 15px;">
+                        <i class="fas fa-exclamation-triangle"></i> <strong>Warning:</strong> ${sameIpSnap.size - 1} other account(s) (${otherUsers}) share the same creation signature.
+                    </div>`;
+                }
+            }
+            
+            modalContent.innerHTML = `
+                ${fraudWarning}
+                <h4>Core Info</h4><p><strong>Email:</strong> ${userData.email} | <strong>Phone:</strong> ${userData.phone || 'N/A'} | <strong>Status:</strong> ${userData.status}</p>
+                <hr style="margin: 15px 0;">
+                <h4>Recent Transactions</h4><div id="modal-transactions-history"></div>
+                <hr style="margin: 15px 0;"><h4>Recent Spin History</h4><div id="modal-spin-history"></div>
+                <hr style="margin: 15px 0;"><h4>Recent Redemption History</h4><div id="modal-redemption-history"></div>
+                <hr style="margin: 15px 0;"><h4>Recent Referrals</h4><div id="modal-referrals-list"></div>
+                <hr style="margin: 15px 0;"><h4>Admin Action Log on this User</h4><div id="modal-admin-log"></div>
+            `;
+            
+            renderHistory('modal-transactions-history', transactionsSnap.docs.map(d=>d.data()), 'No transactions recorded.', t => {
+                const icon = t.type.includes('spin') ? 'fa-sync-alt' : (t.amount > 0 ? 'fa-plus-circle' : 'fa-minus-circle');
+                const color = t.amount > 0 ? 'var(--success)' : (t.amount < 0 ? 'var(--danger)' : 'var(--gray)');
+                return `<div class="history-item"><div class="history-item-icon transaction" style="color:${color};"><i class="fas ${icon}"></i></div><div class="history-item-details"><h4>${t.description}</h4><p>${new Date(t.timestamp.toDate()).toLocaleString()}</p></div><div class="history-item-meta"><strong>${t.amount > 0 ? '+' : ''}${t.amount.toLocaleString('en-IN')}</strong></div></div>`;
+            });
+
+            renderHistory('modal-spin-history', spinSnap.docs.map(d=>d.data()), 'No spin history.', s => `<p>${new Date(s.date).toLocaleString()}: ${s.reward > 0 ? `Won ${s.rewardText}` : 'No Reward'}</p>`);
+            renderHistory('modal-redemption-history', redeemSnap.docs.map(d=>d.data()), 'No redemption history.', r => `<p>${new Date(r.date).toLocaleString()}: Redeemed ${r.points} pts for ₹${r.amount.toFixed(2)} [${r.status}]</p>`);
+            renderHistory('modal-referrals-list', refSnap.docs.map(d=>d.data()), 'No referrals.', r => `<p>${new Date(r.date).toLocaleString()}: ${r.name} joined.</p>`);
+            renderHistory('modal-admin-log', adminLogSnap.docs.map(d=>d.data()), 'No admin actions on this user.', a => `<p>${new Date(a.timestamp.toDate()).toLocaleString()}: [${a.adminName}] ${a.type} - ${JSON.stringify(a.details)}</p>`);
+        }
+        
+        async function logAdminAction(targetUserId, type, details) {
+            if (!auth.currentUser) return;
+            const logData = {
+                type, details,
+                targetUserId,
+                adminId: auth.currentUser.uid,
+                adminName: currentUserData.name,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            await db.collection('adminAuditLog').add(logData);
+            
+            if (targetUserId !== 'system' && targetUserId !== 'all_users') {
+                 await db.collection('users').doc(targetUserId).collection('adminActions').add(logData);
+            }
+        }
+        
+        const openModal = (id) => document.getElementById(id).style.display = 'block';
+        const closeAllModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+
+    </script>
+</body>
+</html>
