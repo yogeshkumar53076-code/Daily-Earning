@@ -1185,19 +1185,27 @@
         }
         
         .pulse { animation: pulse 2s infinite; }
+
+        /* Adsterra Ad Styling */
+        .adsterra-banner-container {
+            margin: 20px auto; /* Added auto for horizontal centering */
+            text-align: center;
+            min-height: 50px; /* Adjust as needed for ad sizes */
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            overflow: hidden; /* To handle ad overflow if not properly sized on mobile */
+            max-width: 100%; /* Ensure it doesn't exceed parent width */
+            box-sizing: border-box; /* Include padding in width calculation */
+            /* Added for better mobile handling of fixed-width banners */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
-  <script type="text/javascript">
-	atOptions = {
-		'key' : 'f1f5b678a0f6db9acb51bef19382ed98',
-		'format' : 'iframe',
-		'height' : 250,
-		'width' : 250,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/f1f5b678a0f6db9acb51bef19382ed98/invoke.js"></script>
     <!-- Maintenance Mode Overlay -->
     <div id="maintenance-overlay">
         <i class="fas fa-tools"></i>
@@ -1208,7 +1216,7 @@
     <!-- Notification Popup -->
     <div class="notification" id="notification">
         <div class="notification-content" id="notification-content"></div>
-        <button class="notification-close" id="notification-clse"><i class="fas fa-times"></i></button>
+        <button class="notification-close" id="notification-close"><i class="fas fa-times"></i></button>
     </div>
 
     <div class="container">
@@ -1257,6 +1265,21 @@
                     <div class="user-balance"><i class="fas fa-coins"></i><span id="user-points">0</span></div>
                 </div>
             </header>
+
+            <!-- ADSTERRA AD CODE: After Header (468x60) -->
+            <div class="adsterra-banner-container">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '3d40bd8f534710863c818ba444988ff1',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/3d40bd8f534710863c818ba444988ff1/invoke.js"></script>
+            </div>
+            <!-- END ADSTERRA AD CODE: After Header -->
             
             <!-- Home Screen -->
             <div id="home-screen" class="screen-container screen-active">
@@ -1275,6 +1298,22 @@
                     <div class="feature-card" data-target="leaderboard-screen"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3>Leaderboard</h3></div>
                     <div class="feature-card" data-target="achievements-screen"><div class="feature-icon"><i class="fas fa-award"></i></div><h3>Achievements</h3></div>
                 </div>
+
+                <!-- ADSTERRA AD CODE: Home Screen In-Content (300x250) -->
+                <div class="adsterra-banner-container">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : 'f1f5b678a0f6db9acb51bef19382ed98',
+                            'format' : 'iframe',
+                            'height' : 250,
+                            'width' : 300,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="//www.highperformanceformat.com/f1f5b678a0f6db9acb51bef19382ed98/invoke.js"></script>
+                </div>
+                <!-- END ADSTERRA AD CODE: Home Screen In-Content -->
+
                 <div class="card">
                     <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Tasks (Earn Points & Spins!)</h2>
                     <div id="quick-tasks-grid" class="offers-grid">
@@ -1319,9 +1358,18 @@
             <div id="offers-screen" class="screen-container">
                 <div class="card">
                     <h2 class="card-title"><i class="fas fa-gift"></i> Special Offers</h2>
+
+                    <!-- ADSTERRA AD CODE: Offers Screen Banner (with div container) -->
+                    <div class="adsterra-banner-container">
+                        <script async="async" data-cfasync="false" src="//pl27701289.revenuecpmgate.com/ca73e07c6832ddddbb04811a6db012bd/invoke.js"></script>
+                        <div id="container-ca73e07c6832ddddbb04811a6db012bd"></div>
+                    </div>
+                    <!-- END ADSTERRA AD CODE: Offers Screen Banner -->
+
                     <div id="offers-grid-container" class="offers-grid">
                         <p style="text-align: center; color: var(--gray); padding: 20px;">No offers available right now.</p>
                     </div>
+
                 </div>
             </div>
             
@@ -2712,8 +2760,8 @@
             
             document.getElementById('daily-login-points').value = systemSettings.dailyLoginBonusPoints;
             document.getElementById('daily-login-spins').value = systemSettings.dailyLoginBonusSpins;
-            document.getElementById('video-reward-points').value = systemSettings.videoWatchRewardPoints;
-            document.getElementById('video-reward-spins').value = systemSettings.videoWatchRewardSpins;
+            document.getElementById('video-watch-reward-points').value = systemSettings.videoWatchRewardPoints;
+            document.getElementById('video-watch-reward-spins').value = systemSettings.videoWatchRewardSpins;
             document.getElementById('survey-reward-points').value = systemSettings.surveyCompleteRewardPoints;
             document.getElementById('survey-reward-spins').value = systemSettings.surveyCompleteRewardSpins;
             document.getElementById('signup-spins').value = systemSettings.signupSpins;
@@ -2966,5 +3014,8 @@
         const closeAllModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
 
     </script>
+    <!-- ADSTERRA AD CODE: Popunder/Social Bar (global) -->
+    <script type='text/javascript' src='//pl27701436.revenuecpmgate.com/bc/45/0d/bc450d69225f9cf95487eea80b60f310.js'></script>
+    <!-- END ADSTERRA AD CODE: Popunder/Social Bar -->
 </body>
 </html>
